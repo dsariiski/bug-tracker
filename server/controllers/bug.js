@@ -1,7 +1,5 @@
 module.exports = {
-    get: {
-        details
-    },
+    get: {},
     post: {
         create,
         edit,

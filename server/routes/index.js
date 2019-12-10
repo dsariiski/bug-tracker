@@ -1,5 +1,5 @@
 const rAuth = require('./auth')
-const rBug = require("./product")
+const rBug = require("./bug")
 
 module.exports = (app) => {
     // app.get("/", loadBugs)

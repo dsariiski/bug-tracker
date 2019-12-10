@@ -6,5 +6,11 @@ module.exports = () => {
     //require models..
     require("../models/User")
 
-    return mongoose.connect(config.connectionString)
+    //for internal mongoose use
+    mongoose.set('useCreateIndex', true)
+
+    return mongoose.connect(config.connectionString, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    })
 }
