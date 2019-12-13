@@ -5,6 +5,7 @@ mongoose.Promise = Promise
 module.exports = () => {
     //require models..
     require("../models/User")
+    require('../models/Bug')
 
     //for internal mongoose use
     mongoose.set('useCreateIndex', true)

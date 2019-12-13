@@ -9,19 +9,22 @@ function login(username, password) {
     return axios.post(loginUrl, JSON.stringify(userBody), {
         headers: {
             "Content-Type": "application/json"
-        }
+        },
+        withCredentials: true
     })
 }
 
-function register(username, password, repeatPassword){
-    const userBody = {username, password}
+function register(username, password, repeatPassword) {
+    const userBody = { username, password }
     const registerUrl = baseUrl + "register"
 
-    return axios.post(registerUrl, JSON.stringify(userBody), {
+    const postPromise = axios.post(registerUrl, JSON.stringify(userBody), {
         headers: {
             "Content-Type": "application/json"
         }
     })
+
+    return password === repeatPassword ? postPromise : Promise.reject("passwords must match!")
 }
 
 export default {

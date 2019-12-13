@@ -1,16 +1,18 @@
 import React from "react"
 
-function Input(props) {
-    const { name, type, changeHandler } = props
-
+function Input({ name, type, changeHandler, value }) {
+    //value is optional
     return (
-        <div>
+        <React.Fragment>
             <label htmlFor={name}>
                 {name}
-                <input id={name} type={type} onChange={changeHandler} />
+                <input id={name}
+                    value={value}
+                    type={type}
+                    onChange={changeHandler} />
                 <br />
             </label>
-        </div>
+        </React.Fragment>
     )
 }
 

@@ -59,8 +59,9 @@ function login(req, res) {
             */
             
             const signedJwt = helpers.auth.encodeToken({id: user._id})
-            res.cookie("userToken", signedJwt)
-            res.send(user)
+            res.cookie("userToken", signedJwt).send(user)
+
+            // res.send(user)
         })
         .catch(err => {
             res.status(500).send("500: login went wrong... please try again later.")
