@@ -7,7 +7,7 @@ import "./details.css"
 import TemplatePage from "../../../hoc/TemplatePage"
 
 import bugService from "../../../../utils/bug-service"
-import helpers from "../../../../utils/helpers"
+import { errorHandler } from "../../../../utils/helpers"
 
 function Details(props) {
     const { id } = props.match.params
@@ -16,7 +16,7 @@ function Details(props) {
     bugService.get.bug(bug.id)
         .then(({ data }) => {
             setBug(data)
-        }).catch(helpers.errorHandler)
+        }).catch(errorHandler)
 
     const heading = <h1>Details</h1>
 

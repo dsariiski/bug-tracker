@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 
-import userMiddlewares from "../../utils/userMiddlewares"
+import { parseCookies } from "../../utils/helpers"
+import userService from "../../utils/user-service"
 import bugService from "../../utils/bug-service"
 
 function withForm(Cmp, initialState) {
@@ -10,7 +11,8 @@ function withForm(Cmp, initialState) {
 
             this.state = {
                 form: initialState.form,
-                common: { ...initialState.common || "" }
+                common: { ...initialState.common || "" },
+                cookies: parseCookies()
             }
 
             this.handlers = {
@@ -47,18 +49,26 @@ function withForm(Cmp, initialState) {
             if (category === "user") {
                 const { username, password, repeatPassword } = this.state.form
 
-                userMiddlewares.post[type](username, password, repeatPassword)
+                userService.post[type](username, password, repeatPassword)
                     .then(this.handlers[category][type])
                     .catch(this.handlers.error)
             } else if (category === "bug") {
                 const bugData = this.state.form
-                const {id} = this.state.common
+                // const { id } = this.state.common
 
                 bugService.post[type](bugData)
                     .then(this.handlers[category][type])
                     .catch(this.handlers.error)
             }
         }
+
+        getCookie = (name) => {
+            return this.state.cookies[name]
+        }
+
+        setCookies = (values) => this.setState((prevState) => {
+            return { cookies: { ...prevState.cookies, ...values } }
+        })
 
         getCommon = (name) => {
             return this.state.common[name]
@@ -80,13 +90,17 @@ function withForm(Cmp, initialState) {
             })
         }
 
-
         loginResolve = userInfo => {
-            alert(`Welcome ${userInfo.data.username}`)
+            const updatedCookies = parseCookies()
+            this.setCookies(updatedCookies)
+
+            this.props.history.go(-1)
+
+            console.log(`Welcome ${userInfo.data.username}`)
         }
 
         registerResolve = userInfo => {
-            alert(`Registered successfully!`)
+            console.log(`Registered successfully!`)
         }
 
         createBugResolve = bug => {
@@ -100,13 +114,15 @@ function withForm(Cmp, initialState) {
 
         render() {
             return <Cmp
-                match={this.props.match}
+                {...this.props}
                 changeHandlerMaker={this.changeHandlerMaker}
                 submitHandlerMaker={this.submitHandlerMaker}
                 getFormState={this.getFormState}
                 updateFormState={this.updateFormState}
                 getCommon={this.getCommon}
-                updateCommon={this.updateCommon} />
+                updateCommon={this.updateCommon}
+                getCookie={this.getCookie}
+                setCookie={this.setCookies} />
         }
     }
 }

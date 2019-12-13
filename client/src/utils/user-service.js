@@ -27,7 +27,18 @@ function register(username, password, repeatPassword) {
     return password === repeatPassword ? postPromise : Promise.reject("passwords must match!")
 }
 
+function logout() {
+    const logoutUrl = baseUrl + "logout"
+
+    return axios.get(logoutUrl, {
+        withCredentials: true
+    })
+}
+
 export default {
+    get: {
+        logout
+    },
     post: {
         login,
         register

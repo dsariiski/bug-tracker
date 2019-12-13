@@ -10,6 +10,7 @@ function Navigation(props) {
         <Link to="/reports">My reports</Link>
         <Link to="/login">Login</Link>
         <Link to="/register">Register</Link>
+        <Link to="/logout">Logout</Link>
     </nav>
 }
 

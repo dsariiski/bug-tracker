@@ -18,20 +18,24 @@ module.exports = {
 
 //GET
 function user(req, res, next) {
-    const {username} = req.params
+    const { username } = req.params
 
-    User.findOne({username})
-    .then(rezult => {
-        console.log(`dRezult: ${rezult}`)
-        res.status(200).send(rezult)
-    }).catch(err => {
-        console.log(`dError: ${err}`)
-        next(err)
-    })
+    User.findOne({ username })
+        .then(rezult => {
+            console.log(`dRezult: ${rezult}`)
+            res.status(200).send(rezult)
+        }).catch(err => {
+            console.log(`dError: ${err}`)
+            next(err)
+        })
 }
 
 function logout(req, res) {
     res.clearCookie("userToken")
+    res.clearCookie("username")
+    res.clearCookie("rememberMe")
+
+    res.status(200).send()
 }
 
 //POST
@@ -57,9 +61,12 @@ function login(req, res) {
                 return
             }  
             */
-            
-            const signedJwt = helpers.auth.encodeToken({id: user._id})
-            res.cookie("userToken", signedJwt).send(user)
+
+            const signedJwt = helpers.auth.encodeToken({ id: user._id })
+            res.cookie("userToken", signedJwt)
+                .cookie("rememberMe", true)
+                .cookie("username", username)
+                .send(user)
 
             // res.send(user)
         })
@@ -92,7 +99,7 @@ function register(req, res) {
     const hashedPassword = helpers.auth.generateHashedPassword(password, salt)
 
     const userData = {
-        username, salt, 
+        username, salt,
         password: hashedPassword
     }
 
@@ -102,20 +109,20 @@ function register(req, res) {
         })
         .catch(err => {
             let errors = []
-            if(err.name === "MongoError" && err.code === 11000){
-                const errorMsg =  "A user with that name already exists. Please choose a different name."
+            if (err.name === "MongoError" && err.code === 11000) {
+                const errorMsg = "A user with that name already exists. Please choose a different name."
                 errors.push(errorMsg)
                 // helpers.notification.addErrorRes(errors, res)
             }
-            if(err.name === "ValidationError"){
-                for(let [key, value] of Object.entries(err.errors)){
+            if (err.name === "ValidationError") {
+                for (let [key, value] of Object.entries(err.errors)) {
                     errors.push(value)
                 }
                 // helpers.notification.addErrorRes(errors, res)
             }
             // console.warn(err)
 
-            return errors ? res.status(400).type("json").send({errors}) : res.status(500).send()
+            return errors ? res.status(400).type("json").send({ errors }) : res.status(500).send()
         })
 }
 
