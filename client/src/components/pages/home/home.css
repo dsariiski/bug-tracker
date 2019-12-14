@@ -1,3 +1,41 @@
+#bugs {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 50%;
+    margin-left: 25%;
+}
+
+#bugs th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #000;
+    color: white;
+}
+
+#bugs td, th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#bugs tr {
+    text-align: center;
+}
+
+#bugs tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#bugs tr:hover {
+    background-color: #ddd;
+}
+
+#bugs td a {
+    padding: 5px;
+}
+
+/*
 .bugs {
     margin-left: 40%;
 }
+*/

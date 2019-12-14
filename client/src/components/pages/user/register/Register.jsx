@@ -10,7 +10,7 @@ function Register({ changeHandlerMaker, submitHandlerMaker }) {
     const changePasswordHandler = changeHandlerMaker("password")
     const changeRepeatPasswordHandler = changeHandlerMaker("repeatPassword")
 
-    const submitRegisterHandler = submitHandlerMaker("register")
+    const submitRegisterHandler = submitHandlerMaker("user", "register")
 
     let content = <form>
         <Input name="username" type="text" changeHandler={changeUsernameHandler} />

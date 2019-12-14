@@ -6,10 +6,8 @@ import TemplatePage from "../../../hoc/TemplatePage"
 import withForm from "../../../hoc/withForm"
 import Input from "../../../parts/Input"
 
-// import { parseCookies } from "../../../../utils/helpers"
-
 function Create(props) {
-    const { changeHandlerMaker, submitHandlerMaker, history, getCookie } = props
+    const { changeHandlerMaker, submitHandlerMaker, getCookie } = props
 
     const titleChangeHandler = changeHandlerMaker("title")
     const descriptionChangeHandler = changeHandlerMaker("description")
@@ -31,7 +29,6 @@ function Create(props) {
     if (loggedIn) {
         return <TemplatePage content={createForm} />
     } else {
-        history.push("/")
         return <Redirect to="/login" />
     }
 }

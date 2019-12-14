@@ -43,7 +43,6 @@ function withForm(Cmp, initialState) {
         }
 
         submitHandlerMaker = (category, type) => event => {
-            //TODO: add post-auth logic
             event.preventDefault()
 
             if (category === "user") {
@@ -105,6 +104,10 @@ function withForm(Cmp, initialState) {
 
         createBugResolve = bug => {
             console.log(`${bug.data.message}`)
+        }
+
+        editBugResolve = bug => {
+            console.log("edited successfully!")
         }
 
         errorHandler = userError => {

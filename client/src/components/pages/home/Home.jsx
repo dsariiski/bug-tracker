@@ -24,14 +24,38 @@ class Home extends Component {
     }
 
     renderContent = () => {
-        const content = <div className="bugs">
-            <ul>{this.state.bugs.map(bug => {
-                return <React.Fragment key={bug._id}>
-                    <Link to={`/bug/${bug._id}`} id={bug._id}>{bug.title}</Link>
-                    <br />
-                </React.Fragment>
-            })}</ul>
-        </div>
+        const content = <table id="bugs">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Author</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {this.state.bugs.map(bug => {
+                    return <tr key={bug._id}>
+                        <td key={`title ${bug._id.substring(0, 2)}`}>
+                            <Link to={`/bug/${bug._id}`}>{bug.title}</Link>
+                        </td>
+                        <td key={`description ${bug._id.substring(0, 2)}`}>
+                            {bug.description.substring(0, 15)}...
+                    </td>
+                        <td key={`author ${bug._id.substring(0, 2)}`}>
+                            {bug.creator.username}
+                        </td>
+                        <td>
+                            <Link to={`bug/edit/${bug._id}`}>&#128393;</Link>
+                            <Link to="#">&#10005;</Link>
+                            {/* <button>&#128393;</button>
+                            <button>&#10005;</button> */}
+                        </td>
+                        <td>{"promenliva1", "promenilva2"}</td>
+                    </tr>
+                })}
+            </tbody>
+        </table>
 
         return content
     }

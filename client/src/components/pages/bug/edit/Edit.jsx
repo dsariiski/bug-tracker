@@ -1,5 +1,7 @@
 import React from "react"
 
+import { Redirect } from "react-router-dom"
+
 import "./edit.css"
 
 import TemplatePage from "../../../hoc/TemplatePage"
@@ -11,8 +13,11 @@ import bugService from "../../../../utils/bug-service"
 
 let firstRender = true
 
-function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState, updateFormState, getCommon, updateCommon, match }) {
-    let bugId = match.params.id
+function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState,
+    updateFormState, getCommon, updateCommon, getCookie, match, history }) {
+    const bugId = match.params.id
+
+    const loggedIn = getCookie("userToken")
 
     const changeTitleHandler = changeHandlerMaker("title")
     const changeDescriptionHandler = changeHandlerMaker("description")
@@ -26,11 +31,13 @@ function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState, updateForm
                 updateCommon("views", data.views)
                 updateCommon("id", bugId)
 
+                data.creator = data.creator.username
+
                 const bugData = data
 
                 updateFormState(bugData)
             }).catch(err => {
-                console.log("не66то съ прицака..")
+                console.log("something went wrong")
                 console.dir(err)
             })
     }
@@ -40,11 +47,13 @@ function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState, updateForm
 
     const heading = <h1>Edit</h1>
 
-    let editForm = <form className="bug">
+    //TODO: add edit auth
+
+    let editForm = <form>
         <Input name="title" type="text" changeHandler={changeTitleHandler} value={bug.title} />
         <label htmlFor="description">
             Description:
-            <textarea id="description" onChange={changeDescriptionHandler} />
+            <textarea id="description" value={bug.description} onChange={changeDescriptionHandler} />
         </label>
         <br />
         <span className="views">Views: {views}</span>
@@ -56,7 +65,12 @@ function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState, updateForm
         <button type="submit" onClick={submitEditHandler}>Edit</button>
     </form>
 
-    return <TemplatePage heading={heading} content={editForm} />
+    if (loggedIn) {
+        return <TemplatePage heading={heading} content={editForm} />
+    } else {
+        history.go(-1)
+        return <Redirect to={history.location.pathname} />
+    }
 }
 
 const initialState = {

@@ -14,6 +14,14 @@ function bug(id) {
     return axios.get(getBugUrl)
 }
 
+function my() {
+    const getMyBugsUrl = baseUrl + "bug/my"
+
+    return axios.get(getMyBugsUrl,{
+        withCredentials: true
+    })
+} 
+
 function create({title, description}) {
     const createUrl = baseUrl + "bug/create"
     const bugBody = {
@@ -25,7 +33,8 @@ function create({title, description}) {
     return axios.post(createUrl, JSON.stringify(bugBody), {
         headers: {
             "Content-Type": "application/json"
-        }
+        },
+        withCredentials: true
     })
 }
 
@@ -37,17 +46,19 @@ function edit(newData) {
 
     const bugBody = {title, description, status, views}
 
-    return axios.post(editUrl, bugBody, {
+    return axios.post(editUrl, JSON.stringify(bugBody), {
         headers: {
             "Content-Type": "application/json"
-        }
+        },
+        withCredentials: true
     })
 }
 
 export default {
     get: {
         all,
-        bug
+        bug,
+        my
     },
     post: {
         create,

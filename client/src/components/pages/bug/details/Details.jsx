@@ -7,14 +7,21 @@ import "./details.css"
 import TemplatePage from "../../../hoc/TemplatePage"
 
 import bugService from "../../../../utils/bug-service"
-import { errorHandler } from "../../../../utils/helpers"
+import { parseCookies, errorHandler } from "../../../../utils/helpers"
 
 function Details(props) {
     const { id } = props.match.params
-    const [bug, setBug] = useState({ id })
+    const [bug, setBug] = useState({ id, creator: "" })
+    const [authorized, setAuthorized] = useState(false)
+
+    const creatorName = parseCookies().username
 
     bugService.get.bug(bug.id)
         .then(({ data }) => {
+            if(creatorName===data.creator.username){
+                setAuthorized(true)
+            }
+
             setBug(data)
         }).catch(errorHandler)
 
@@ -28,10 +35,10 @@ function Details(props) {
         <br />
         <span>Status: {bug.status}</span>
         <br />
-        <span>Creator: {bug.creator}</span>
+        <span>Creator: {bug.creator.username}</span>
         <br />
         <Link to={`/bug/edit/${id}`}>
-            <button>Edit</button>
+            <button disabled={!authorized}>Edit</button>
         </Link>
     </div>
 

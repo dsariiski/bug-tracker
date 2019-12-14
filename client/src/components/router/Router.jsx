@@ -11,17 +11,12 @@ import Home from "../pages/home/Home"
 import Create from "../pages/bug/create/Create"
 import Details from "../pages/bug/details/Details"
 import Edit from "../pages/bug/edit/Edit"
-
-// import userService from "../../utils/user-service"
-// import { parseCookies } from "../../utils/helpers"
+import My from "../pages/bug/my/My"
 
 function Router() {
-    // const [loggedIn, updateLoggedIn] = useState(false)
-
-    // const loggedIn = cookies.userToken
-
     return (<Switch>
         <Route path="/" exact component={Home} />
+        <Route path="/my" exat component={My} />
         <Route path="/login" exact component={Login} />
         <Route path="/register" exact component={Register} />
         <Route path="/create" exact component={Create} />

@@ -2,7 +2,7 @@ const rAuth = require('./auth')
 const rBug = require("./bug")
 
 module.exports = (app) => {
-    app.get("/", loadBugs)
+    // app.get("/", loadBugs)
 
     app.use("/user", rAuth)
 

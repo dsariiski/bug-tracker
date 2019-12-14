@@ -4,13 +4,21 @@ import { Redirect } from "react-router-dom"
 
 import userService from "../../../../utils/user-service"
 
-function Logout(props) {
-    userService.get.logout().then(loggedOut => {
-        console.log(loggedOut)
-        props.history.push("/")
-    }).catch(err => {
-        console.log("couldn't log out")
-    })
+import { parseCookies } from "../../../../utils/helpers"
+
+function Logout({ history }) {
+    const loggedIn = parseCookies().userToken
+
+    if (loggedIn) {
+        userService.get.logout().then(loggedOut => {
+            console.log(loggedOut)
+            history.push("/")
+        }).catch(err => {
+            console.log("couldn't log out")
+        })
+
+        return <Redirect to="/" />
+    }
 
     return <Redirect to="/" />
 }

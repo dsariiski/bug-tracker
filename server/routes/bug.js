@@ -5,6 +5,8 @@ const middlewares = require("../helper/middlewares")
 
 rBug.get("/", controllers.bug.get.all)
 
+rBug.get("/my", controllers.bug.get.my)
+
 rBug.get("/:id", controllers.bug.get.one)
 
 // rBug.use(middlewares.isLoggedIn)
