@@ -28,6 +28,12 @@ function withForm(Cmp, initialState) {
             }
         }
 
+        componentDidMount(){
+            this.setState((prevState) => {
+                return {common: {...prevState.common, firstRender: true}}
+            })
+        }
+
         changeHandlerMaker = name => event => {
             //TODO: add debouncing
             const { value } = event.target

@@ -1,11 +1,15 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import { Link, Redirect } from "react-router-dom"
 
 import TemplatePage from "../../../hoc/TemplatePage"
 import withForm from "../../../hoc/withForm"
 import Input from "../../../parts/Input"
 
-function Register({ changeHandlerMaker, submitHandlerMaker }) {
+import { parseCookies } from "../../../../utils/helpers"
+
+function Register({ changeHandlerMaker, submitHandlerMaker, history }) {
+    const loggedIn = parseCookies().userToken
+
     const changeUsernameHandler = changeHandlerMaker("username")
     const changePasswordHandler = changeHandlerMaker("password")
     const changeRepeatPasswordHandler = changeHandlerMaker("repeatPassword")
@@ -21,9 +25,19 @@ function Register({ changeHandlerMaker, submitHandlerMaker }) {
         <Link to="login">Login</Link>
     </form>
 
+    if (!loggedIn) {
+        return <TemplatePage content={content} />
+    } else {
+        //redirects user to previous page
+        history.go(-1)
+        return <Redirect to={history.location.pathname} />
+    }
+
+    /*
     return (
         <TemplatePage content={content} />
     )
+    */
 }
 
 const initialState = {

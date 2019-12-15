@@ -1,9 +1,9 @@
 import React, { Component } from "react"
-import { Link } from "react-router-dom"
 
 import "../../home/home.css"
 
 import TemplatePage from "../../../hoc/TemplatePage"
+import BugTable from "../../../blocks/bugTable/BugTable"
 
 import bugService from "../../../../utils/bug-service"
 
@@ -14,10 +14,11 @@ class My extends Component {
         super(props)
 
         this.state = {
-            heading: "Welcome home",
+            heading: "Login to see your submissions",
             content: [],
             bugs: [],
-            loggedIn: parseCookies().userToken
+            loggedIn: parseCookies().userToken,
+            first: true
         }
     }
 
@@ -26,14 +27,36 @@ class My extends Component {
     }
 
     renderContent = () => {
-        const content = <div className="bugs">
-            <ul>{this.state.loggedIn ? this.state.bugs.map(bug => {
-                return <React.Fragment key={bug._id}>
-                    <Link to={`/bug/${bug._id}`} id={bug._id}>{bug.title}</Link>
-                    <br />
-                </React.Fragment>
-            }): <h2>Please login first...</h2>}</ul>
-        </div>
+        const titles = ["Title", "Description", "Author", "Actions"]
+
+        let content = ""
+
+        if (this.state.loggedIn) {
+            if (this.state.first) {
+                this.setState(() => {
+                    return {
+                        first: false,
+                        heading: "Submissions:"
+                    }
+                })
+            }
+
+            content = <BugTable
+                tableName="bugs"
+                titles={titles}
+                rows={this.state.bugs}
+                entryName="bug" />
+        }
+        /*
+        else {
+            if (first) {
+                first = false
+                this.setState(() => {
+                    return { heading: "Login to see your submissions." }
+                })
+            }
+        }
+        */
 
         return content
     }

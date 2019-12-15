@@ -59,6 +59,7 @@ function my(req, res) {
     const userId = userToken.id
 
     Bug.find({ creator: userId })
+        .populate("creator")
         .then(bugs => {
             console.dir(bugs)
             res.status(200).type("json").send(bugs)

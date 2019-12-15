@@ -17,3 +17,7 @@
 .bug button {
     margin-top:10px;
 }
+
+.bug button:hover:disabled {
+    cursor: auto;
+}

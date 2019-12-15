@@ -11,10 +11,9 @@ import Input from "../../../parts/Input"
 
 import bugService from "../../../../utils/bug-service"
 
-let firstRender = true
-
 function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState,
     updateFormState, getCommon, updateCommon, getCookie, match, history }) {
+
     const bugId = match.params.id
 
     const loggedIn = getCookie("userToken")
@@ -24,10 +23,12 @@ function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState,
 
     const submitEditHandler = submitHandlerMaker("bug", "edit")
 
+    let firstRender = getCommon("firstRender")
+
     if (firstRender) {
         bugService.get.bug(bugId)
             .then(({ data }) => {
-                firstRender = false
+                updateCommon("firstRender", false)
                 updateCommon("views", data.views)
                 updateCommon("id", bugId)
 
@@ -37,7 +38,7 @@ function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState,
 
                 updateFormState(bugData)
             }).catch(err => {
-                console.log("something went wrong")
+                console.log("couldn't fetch edit data: ")
                 console.dir(err)
             })
     }
@@ -62,7 +63,12 @@ function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState,
         <br />
         <span>Creator: {bug.creator}</span>
         <br />
-        <button type="submit" onClick={submitEditHandler}>Edit</button>
+        <button
+            type="submit"
+
+            onClick={submitEditHandler}>
+            Edit
+        </button>
     </form>
 
     if (loggedIn) {

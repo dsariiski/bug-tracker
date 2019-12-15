@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import "./home.css"
 
 import TemplatePage from "../../hoc/TemplatePage"
+import BugTable from "../../blocks/bugTable/BugTable"
 
 import bugService from "../../../utils/bug-service"
 
@@ -24,40 +25,16 @@ class Home extends Component {
     }
 
     renderContent = () => {
-        const content = <table id="bugs">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Author</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {this.state.bugs.map(bug => {
-                    return <tr key={bug._id}>
-                        <td key={`title ${bug._id.substring(0, 2)}`}>
-                            <Link to={`/bug/${bug._id}`}>{bug.title}</Link>
-                        </td>
-                        <td key={`description ${bug._id.substring(0, 2)}`}>
-                            {bug.description.substring(0, 15)}...
-                    </td>
-                        <td key={`author ${bug._id.substring(0, 2)}`}>
-                            {bug.creator.username}
-                        </td>
-                        <td>
-                            <Link to={`bug/edit/${bug._id}`}>&#128393;</Link>
-                            <Link to="#">&#10005;</Link>
-                            {/* <button>&#128393;</button>
-                            <button>&#10005;</button> */}
-                        </td>
-                        <td>{"promenliva1", "promenilva2"}</td>
-                    </tr>
-                })}
-            </tbody>
-        </table>
+        const titles = ["Title", "Description", "Author", "Actions"]
 
-        return content
+        const content2 = <BugTable
+            tableName="bugs"
+            titles={titles}
+            rows={this.state.bugs}
+            entryName="bug" />
+
+
+        return content2
     }
 
     componentDidMount() {
@@ -66,10 +43,21 @@ class Home extends Component {
                 return { bugs: bugs.data }
             })
         }).catch(err => {
-            console.log(`there's an error...`)
+            console.log(`couldn't load bugs`)
             console.dir(err)
         })
 
+    }
+
+    componentDidUpdate() {
+        bugService.get.all().then(bugs => {
+            this.setState(() => {
+                return { bugs: bugs.data }
+            })
+        }).catch(err => {
+            console.log(`couldn't load bugs`)
+            console.dir(err)
+        })
     }
 
     render() {
