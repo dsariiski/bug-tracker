@@ -1,9 +1,10 @@
 import React from "react"
-import { Link, Redirect } from "react-router-dom"
+import { Redirect } from "react-router-dom"
 
 import TemplatePage from "../../../hoc/TemplatePage"
 import withForm from "../../../hoc/withForm"
-import Input from "../../../parts/Input"
+
+import Form from "../../../parts/form/Form"
 
 function Login({ changeHandlerMaker, submitHandlerMaker, getCookie, history }) {
     const loggedIn = getCookie("userToken")
@@ -13,14 +14,24 @@ function Login({ changeHandlerMaker, submitHandlerMaker, getCookie, history }) {
 
     const submitLoginHandler = submitHandlerMaker("user", "login")
 
+    const fields = [{
+        id: "username",
+        type: "text",
+        changeHandler: changeUsernameHandler,
+        element: "input"
+    }, {
+        id: "password",
+        type: "password",
+        changeHandler: changePasswordHandler,
+        element: "input"
+    }]
 
-    let loginForm = <form>
-        <Input name="username" type="text" changeHandler={changeUsernameHandler} />
-        <Input name="password" type="password" changeHandler={changePasswordHandler} />
-        <button type="submit" onClick={submitLoginHandler}>Login</button>
-        <br />
-        <Link to="register">Register</Link>
-    </form>
+    const loginForm = <Form id="loginForm"
+        title="Login:"
+        submitName="Login"
+        fields={fields}
+        submitHandler={submitLoginHandler}
+        register={true} />
 
     if (!loggedIn) {
         return <TemplatePage content={loginForm} />

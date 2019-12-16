@@ -46,7 +46,6 @@ class Home extends Component {
             console.log(`couldn't load bugs`)
             console.dir(err)
         })
-
     }
 
     componentDidUpdate() {

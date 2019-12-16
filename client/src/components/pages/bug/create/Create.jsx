@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom"
 
 import TemplatePage from "../../../hoc/TemplatePage"
 import withForm from "../../../hoc/withForm"
-import Input from "../../../parts/Input"
+import Form from "../../../parts/form/Form"
 
 function Create(props) {
     const { changeHandlerMaker, submitHandlerMaker, getCookie } = props
@@ -16,15 +16,25 @@ function Create(props) {
 
     const loggedIn = getCookie("userToken")
 
-    let createForm = <form>
-        <Input name="title" type="text" changeHandler={titleChangeHandler} />
-        <label htmlFor="description">
-            Description:
-            <textarea id="description" onChange={descriptionChangeHandler} />
-        </label>
-        <br />
-        <button type="submit" onClick={submitBugHandler}>Add</button>
-    </form>
+    const fields = [{
+        id: "title",
+        element: "input",
+        type: "text",
+        value: "",
+        changeHandler: titleChangeHandler
+    }, {
+        id: "description",
+        element: "",
+        value: "",
+        changeHandler: descriptionChangeHandler
+    }]
+
+    const createForm = <Form id="createForm"
+        title="Submit a bug"
+        submitName="Create"
+        submitHandler={submitBugHandler}
+        fields={fields}
+    />
 
     if (loggedIn) {
         return <TemplatePage content={createForm} />

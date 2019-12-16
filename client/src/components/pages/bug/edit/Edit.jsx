@@ -7,7 +7,7 @@ import "./edit.css"
 import TemplatePage from "../../../hoc/TemplatePage"
 import withForm from "../../../hoc/withForm"
 
-import Input from "../../../parts/Input"
+import Form from "../../../parts/form/Form"
 
 import bugService from "../../../../utils/bug-service"
 
@@ -16,6 +16,7 @@ function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState,
 
     const bugId = match.params.id
 
+    //TODO: add authentication
     const loggedIn = getCookie("userToken")
 
     const changeTitleHandler = changeHandlerMaker("title")
@@ -50,26 +51,24 @@ function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState,
 
     //TODO: add edit auth
 
-    let editForm = <form>
-        <Input name="title" type="text" changeHandler={changeTitleHandler} value={bug.title} />
-        <label htmlFor="description">
-            Description:
-            <textarea id="description" value={bug.description} onChange={changeDescriptionHandler} />
-        </label>
-        <br />
-        <span className="views">Views: {views}</span>
-        <br />
-        <span>Status: {bug.status}</span>
-        <br />
-        <span>Creator: {bug.creator}</span>
-        <br />
-        <button
-            type="submit"
+    const fields = [{
+        id: "title",
+        element: "input",
+        type: "text",
+        value: bug.title,
+        changeHandler: changeTitleHandler
+    }, {
+        id: "description",
+        element: "",
+        value: bug.description,
+        changeHandler: changeDescriptionHandler
+    }]
 
-            onClick={submitEditHandler}>
-            Edit
-        </button>
-    </form>
+    const editForm = <Form id="editForm"
+        title="Update your submission:"
+        submitName="Edit"
+        fields={fields}
+        submitHandler={submitEditHandler} />
 
     if (loggedIn) {
         return <TemplatePage heading={heading} content={editForm} />

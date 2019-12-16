@@ -23,12 +23,15 @@ body {
 
 .menu {
     box-sizing: border-box;
-    max-width: 640px;
+    max-width: 80%;
     width: 100%;
     padding-left: 1rem;
     padding-right: 1rem;
     order: 1;
     margin: auto;
+    font-size: 25px;
+    
+    border-radius: 15px;
     
     /* background-color: #6c5ce7; */
     background-color: #828282;
@@ -50,7 +53,7 @@ body {
 
 .menu .link {
     display: block;
-}
+}   
 
 .menu .link {
     /* padding: 2rem 1.5rem; */
@@ -59,7 +62,7 @@ body {
     font-weight: 460;
     color: #fff;
     text-decoration: none;
-    text-transform: uppercase;
+    text-transform: capitalize;
 }
 
 /* states */
@@ -119,4 +122,9 @@ body {
 
 .menu:hover .menu link:not(:hover) {
     color: #241c69;
+}
+
+img {
+    width: 30px;
+    height: 30px;
 }

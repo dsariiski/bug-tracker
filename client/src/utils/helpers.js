@@ -12,6 +12,10 @@ function reduceCookies(acc, jibberishCookie) {
     return { ...acc, [name]: value }
 }
 
+function first2Letters(word){
+    return word.substring(0, 2)
+}
+
 function errorHandler(err) {
     console.warn("Something went wrong")
 
@@ -20,5 +24,6 @@ function errorHandler(err) {
 
 export {
     parseCookies,
+    first2Letters,
     errorHandler
 }

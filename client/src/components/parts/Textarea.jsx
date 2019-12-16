@@ -1,19 +1,20 @@
 import React from "react"
 
-function Input({ id, type, changeHandler, value }) {
+function Textarea({ id, changeHandler, formName, value }) {
     //value is optional
 
     return (
-        <div className="pair">
+        <div className="ta">
             <label htmlFor={id}>
                 {id[0].toUpperCase() + id.slice(1)}:
             </label>
-            <input id={id}
+            <textarea id={id}
                 value={value || undefined}
-                type={type}
+                form={formName}
                 onChange={changeHandler} />
         </div>
     )
+
 }
 
-export default Input
+export default Textarea

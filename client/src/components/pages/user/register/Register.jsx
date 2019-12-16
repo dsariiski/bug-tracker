@@ -3,7 +3,7 @@ import { Link, Redirect } from "react-router-dom"
 
 import TemplatePage from "../../../hoc/TemplatePage"
 import withForm from "../../../hoc/withForm"
-import Input from "../../../parts/Input"
+import Form from "../../../parts/form/Form"
 
 import { parseCookies } from "../../../../utils/helpers"
 
@@ -16,28 +16,37 @@ function Register({ changeHandlerMaker, submitHandlerMaker, history }) {
 
     const submitRegisterHandler = submitHandlerMaker("user", "register")
 
-    let content = <form>
-        <Input name="username" type="text" changeHandler={changeUsernameHandler} />
-        <Input name="password" type="password" changeHandler={changePasswordHandler} />
-        <Input name="repeatPassword" type="password" changeHandler={changeRepeatPasswordHandler} />
-        <button type="submit" onClick={submitRegisterHandler}>Register</button>
-        <br />
-        <Link to="login">Login</Link>
-    </form>
+    const fields = [{
+        id: "username",
+        type: "text",
+        changeHandler: changeUsernameHandler,
+        element: "input"
+    }, {
+        id: "password",
+        type: "password",
+        changeHandler: changePasswordHandler,
+        element: "input"
+    }, {
+        id: "repeatPassword",
+        type: "password",
+        changeHandler: changeRepeatPasswordHandler,
+        element: "input"
+    }]
+
+    const registerForm = <Form id="registerForm"
+        title="Register:"
+        submitName="Register"
+        fields={fields}
+        submitHandler={submitRegisterHandler}
+        login={true} />
 
     if (!loggedIn) {
-        return <TemplatePage content={content} />
+        return <TemplatePage content={registerForm} />
     } else {
         //redirects user to previous page
         history.go(-1)
         return <Redirect to={history.location.pathname} />
     }
-
-    /*
-    return (
-        <TemplatePage content={content} />
-    )
-    */
 }
 
 const initialState = {
