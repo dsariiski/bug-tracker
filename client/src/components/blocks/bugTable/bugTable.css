@@ -5,6 +5,7 @@
     /* margin-left: 25%; */
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 10%;
     display: table;
     font-size: 20px;
 }
@@ -26,6 +27,11 @@
 .bugs tr {
     text-align: center;
     background-color: #ebe7e7;
+    max-height: 43px;
+}
+
+.bugs td {
+    max-height: 43px;
 }
 
 .bugs tr:nth-child(even) {
@@ -38,4 +44,8 @@
 
 .bugs td a {
     padding: 5px;
+}
+
+.bugs h5 {
+    max-height: 43px;
 }

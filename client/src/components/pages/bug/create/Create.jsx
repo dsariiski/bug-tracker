@@ -7,10 +7,12 @@ import withForm from "../../../hoc/withForm"
 import Form from "../../../parts/form/Form"
 
 function Create(props) {
-    const { changeHandlerMaker, submitHandlerMaker, getCookie } = props
+    const { changeHandlerMaker, submitHandlerMaker, getCookie, getErrors } = props
 
-    const titleChangeHandler = changeHandlerMaker("title")
-    const descriptionChangeHandler = changeHandlerMaker("description")
+    const validationType = "other"
+
+    const titleChangeHandler = changeHandlerMaker("title", validationType)
+    const descriptionChangeHandler = changeHandlerMaker("description", validationType)
 
     const submitBugHandler = submitHandlerMaker("bug", "create")
 
@@ -34,6 +36,7 @@ function Create(props) {
         submitName="Create"
         submitHandler={submitBugHandler}
         fields={fields}
+        errors={getErrors()}
     />
 
     if (loggedIn) {

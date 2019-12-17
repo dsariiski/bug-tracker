@@ -11,7 +11,7 @@ function Navigation(props) {
     return <nav className="menu">
         <ul className="list">
             <li className="group">
-                <Link to="/" className="link"><img src="logo.svg" alt="logo" /></Link>
+                <Link to="/" className="link"><img src="logo.svg" alt="Home" /></Link>
             </li>
             {/* <li className="group">
                     <Link to="/" className="link">Home</Link>

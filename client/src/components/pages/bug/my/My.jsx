@@ -5,7 +5,7 @@ import "../../home/home.css"
 import TemplatePage from "../../../hoc/TemplatePage"
 import BugTable from "../../../blocks/bugTable/BugTable"
 
-import bugService from "../../../../utils/bug-service"
+import bugService from "../../../../utils/service/bug-service"
 
 import { parseCookies } from "../../../../utils/helpers"
 
@@ -47,16 +47,6 @@ class My extends Component {
                 rows={this.state.bugs}
                 entryName="bug" />
         }
-        /*
-        else {
-            if (first) {
-                first = false
-                this.setState(() => {
-                    return { heading: "Login to see your submissions." }
-                })
-            }
-        }
-        */
 
         return content
     }

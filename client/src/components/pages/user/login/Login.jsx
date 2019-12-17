@@ -6,11 +6,14 @@ import withForm from "../../../hoc/withForm"
 
 import Form from "../../../parts/form/Form"
 
-function Login({ changeHandlerMaker, submitHandlerMaker, getCookie, history }) {
+function Login({ changeHandlerMaker, submitHandlerMaker, getCookie, history, getErrors }) {
     const loggedIn = getCookie("userToken")
 
-    const changeUsernameHandler = changeHandlerMaker("username")
-    const changePasswordHandler = changeHandlerMaker("password")
+    const validationType = "user"
+
+
+    const changeUsernameHandler = changeHandlerMaker("username", validationType)
+    const changePasswordHandler = changeHandlerMaker("password", validationType)
 
     const submitLoginHandler = submitHandlerMaker("user", "login")
 
@@ -31,7 +34,8 @@ function Login({ changeHandlerMaker, submitHandlerMaker, getCookie, history }) {
         submitName="Login"
         fields={fields}
         submitHandler={submitLoginHandler}
-        register={true} />
+        register={true}
+        errors={getErrors()} />
 
     if (!loggedIn) {
         return <TemplatePage content={loginForm} />

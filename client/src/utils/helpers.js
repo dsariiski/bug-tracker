@@ -22,8 +22,30 @@ function errorHandler(err) {
     console.dir(err)
 }
 
+function reduceErrors (errors) {
+    errors = errors.inner
+    return errors.reduce((errAccumulator, currentErr, currentIndex) => {
+        if (currentIndex === 0) {
+            errAccumulator = {}
+        }
+
+        // debugger
+        let { errors, path } = currentErr
+
+        if (!errAccumulator[path]) {
+            errAccumulator[path] = []
+        }
+
+        errAccumulator[path].push(errors[0])
+
+        return errAccumulator
+
+    }, errors[0])
+}
+
 export {
     parseCookies,
     first2Letters,
-    errorHandler
+    errorHandler,
+    reduceErrors
 }

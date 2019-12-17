@@ -44,33 +44,19 @@ function login(req, res) {
 
     User.findOne({ username })
         .then(user => {
-            /*
-            if (!user) {
-                let errorMsg = "User doesn't exist. Please enter a valid username."
-                helpers.notification.addErrorRes([errorMsg], res)
-                return
-            }
-            */
-
             const passwordMatches = helpers.auth.passwordMatches(password, user.salt, user.password)
 
-            /*
-            if (!passwordMatches) {
-                let errorMsg = "Invalid password. Please try again."
-                helpers.notification.addErrorRes([errorMsg], res)
-                return
-            }  
-            */
+            if (!user || !passwordMatches) {
+                let errorMsg = "Invalid username or password."
+                return res.status(403).send({errors: [errorMsg]})
+            }
 
             const signedJwt = helpers.auth.encodeToken({ id: user._id })
             res.cookie("userToken", signedJwt)
                 .cookie("rememberMe", true)
                 .cookie("username", username)
                 .send(user)
-
-            // res.send(user)
-        })
-        .catch(err => {
+        }).catch(err => {
             res.status(500).send("500: login went wrong... please try again later.")
 
             console.warn(err)
@@ -106,8 +92,7 @@ function register(req, res) {
     User.create(userData)
         .then(user => {
             res.send(user)
-        })
-        .catch(err => {
+        }).catch(err => {
             let errors = []
             if (err.name === "MongoError" && err.code === 11000) {
                 const errorMsg = "A user with that name already exists. Please choose a different name."
@@ -122,7 +107,7 @@ function register(req, res) {
             }
             // console.warn(err)
 
-            return errors ? res.status(400).type("json").send({ errors }) : res.status(500).send()
+            return errors ? res.status(409).type("json").send({ errors }) : res.status(500).send()
         })
 }
 

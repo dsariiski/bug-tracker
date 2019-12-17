@@ -1,12 +1,11 @@
 import React, { Component } from "react"
-import { Link } from "react-router-dom"
 
 import "./home.css"
 
 import TemplatePage from "../../hoc/TemplatePage"
 import BugTable from "../../blocks/bugTable/BugTable"
 
-import bugService from "../../../utils/bug-service"
+import bugService from "../../../utils/service/bug-service"
 
 class Home extends Component {
 
@@ -33,8 +32,20 @@ class Home extends Component {
             rows={this.state.bugs}
             entryName="bug" />
 
-
         return content2
+    }
+
+    equal(obj1, obj2) {
+        obj1 = Object.entries(obj1)
+        obj2 = Object.entries(obj2)
+
+        for (let [key, val] of obj1) {
+            if (val !== obj2[key]) {
+                return false
+            }
+        }
+
+        return true
     }
 
     componentDidMount() {
@@ -48,16 +59,23 @@ class Home extends Component {
         })
     }
 
+
     componentDidUpdate() {
         bugService.get.all().then(bugs => {
-            this.setState(() => {
-                return { bugs: bugs.data }
+            this.setState((prevState) => {
+                const equal = this.equal(prevState, bugs)
+
+                if (equal) {
+                    return { bugs: bugs.data }
+                }
             })
+
         }).catch(err => {
             console.log(`couldn't load bugs`)
             console.dir(err)
         })
     }
+
 
     render() {
         return <TemplatePage content={this.renderContent()} heading={this.renderHeading()} />

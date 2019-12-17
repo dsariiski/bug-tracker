@@ -4,23 +4,31 @@ import { Link } from "react-router-dom"
 
 import Input from "../Input"
 import Textarea from "../Textarea"
+import Errors from "../Errors"
 
 import "./form.css"
 
-function Form({ id, title, submitName, fields, submitHandler, register, login }) {
+function Form({ id, title, submitName, fields, submitHandler, register, login, errors }) {
+    // debugger
     fields = fields.map((field) => {
         if (field.element.toLowerCase() === "input") {
-            return <Input id={field.id}
-                type={field.type}
-                changeHandler={field.changeHandler}
-                value={field.value}
-                key={field.id} />
+            return (<React.Fragment key={field.id + "123"}>
+                <Input id={field.id}
+                    type={field.type}
+                    changeHandler={field.changeHandler}
+                    value={field.value}
+                    key={field.id} />
+                <Errors errors={errors[field.id]} />
+            </React.Fragment>)
         } else {
-            return <Textarea id={field.id}
-                changeHandler={field.changeHandler}
-                form={id}
-                value={field.value}
-                key={field.id} />
+            return (<React.Fragment key={field.id + "321"}>
+                <Textarea id={field.id}
+                    changeHandler={field.changeHandler}
+                    form={id}
+                    value={field.value}
+                    key={field.id} />
+                <Errors errors={errors[field.id]} />
+            </React.Fragment>)
         }
     })
 

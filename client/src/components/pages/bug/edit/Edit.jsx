@@ -9,18 +9,21 @@ import withForm from "../../../hoc/withForm"
 
 import Form from "../../../parts/form/Form"
 
-import bugService from "../../../../utils/bug-service"
+import bugService from "../../../../utils/service/bug-service"
 
 function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState,
-    updateFormState, getCommon, updateCommon, getCookie, match, history }) {
+    updateFormState, getCommon, updateCommon, getCookie, match, history,
+    getErrors }) {
 
     const bugId = match.params.id
+
+    const validationType = "other"
 
     //TODO: add authentication
     const loggedIn = getCookie("userToken")
 
-    const changeTitleHandler = changeHandlerMaker("title")
-    const changeDescriptionHandler = changeHandlerMaker("description")
+    const changeTitleHandler = changeHandlerMaker("title", validationType)
+    const changeDescriptionHandler = changeHandlerMaker("description", validationType)
 
     const submitEditHandler = submitHandlerMaker("bug", "edit")
 
@@ -45,7 +48,7 @@ function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState,
     }
 
     const bug = getFormState()
-    const views = getCommon("views")
+    // const views = getCommon("views")
 
     const heading = <h1>Edit</h1>
 
@@ -68,7 +71,8 @@ function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState,
         title="Update your submission:"
         submitName="Edit"
         fields={fields}
-        submitHandler={submitEditHandler} />
+        submitHandler={submitEditHandler} 
+        errors={getErrors()}/>
 
     if (loggedIn) {
         return <TemplatePage heading={heading} content={editForm} />

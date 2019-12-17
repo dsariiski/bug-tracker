@@ -1,5 +1,5 @@
 import React from "react"
-import { Link, Redirect } from "react-router-dom"
+import { Redirect } from "react-router-dom"
 
 import TemplatePage from "../../../hoc/TemplatePage"
 import withForm from "../../../hoc/withForm"
@@ -7,12 +7,14 @@ import Form from "../../../parts/form/Form"
 
 import { parseCookies } from "../../../../utils/helpers"
 
-function Register({ changeHandlerMaker, submitHandlerMaker, history }) {
+function Register({ changeHandlerMaker, submitHandlerMaker, history, getErrors }) {
     const loggedIn = parseCookies().userToken
 
-    const changeUsernameHandler = changeHandlerMaker("username")
-    const changePasswordHandler = changeHandlerMaker("password")
-    const changeRepeatPasswordHandler = changeHandlerMaker("repeatPassword")
+    const validationType = "user"
+
+    const changeUsernameHandler = changeHandlerMaker("username", validationType)
+    const changePasswordHandler = changeHandlerMaker("password", validationType)
+    const changeRepeatPasswordHandler = changeHandlerMaker("repeatPassword", validationType)
 
     const submitRegisterHandler = submitHandlerMaker("user", "register")
 
@@ -38,7 +40,8 @@ function Register({ changeHandlerMaker, submitHandlerMaker, history }) {
         submitName="Register"
         fields={fields}
         submitHandler={submitRegisterHandler}
-        login={true} />
+        login={true}
+        errors={getErrors()}/>
 
     if (!loggedIn) {
         return <TemplatePage content={registerForm} />

@@ -6,12 +6,21 @@ form {
     display: block;
     overflow: auto;
     border-radius: 15px;
-    min-height: 350px;
+    min-height: 450px;
 }
 
 form a {
     margin-top: 7%;
     display: block;
+}
+
+.errors {
+    color: rgb(235, 39, 39);
+}
+
+.errors span {
+    display: block;
+    padding: 1px;
 }
 
 .pair {

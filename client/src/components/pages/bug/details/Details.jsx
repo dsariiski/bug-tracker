@@ -6,7 +6,7 @@ import "./details.css"
 
 import TemplatePage from "../../../hoc/TemplatePage"
 
-import bugService from "../../../../utils/bug-service"
+import bugService from "../../../../utils/service/bug-service"
 import { parseCookies, errorHandler } from "../../../../utils/helpers"
 
 function Details(props) {

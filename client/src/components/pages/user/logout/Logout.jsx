@@ -2,7 +2,7 @@ import React from "react"
 
 import { Redirect } from "react-router-dom"
 
-import userService from "../../../../utils/user-service"
+import userService from "../../../../utils/service/user-service"
 
 import { parseCookies } from "../../../../utils/helpers"
 

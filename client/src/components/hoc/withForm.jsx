@@ -1,8 +1,10 @@
 import React, { Component } from "react"
 
-import { parseCookies } from "../../utils/helpers"
-import userService from "../../utils/user-service"
-import bugService from "../../utils/bug-service"
+import { parseCookies, reduceErrors } from "../../utils/helpers"
+import userService from "../../utils/service/user-service"
+import bugService from "../../utils/service/bug-service"
+
+import validations from "../../utils/validation"
 
 function withForm(Cmp, initialState) {
     return class extends Component {
@@ -12,7 +14,8 @@ function withForm(Cmp, initialState) {
             this.state = {
                 form: initialState.form,
                 common: { ...initialState.common || "" },
-                cookies: parseCookies()
+                cookies: parseCookies(),
+                errors: {}
             }
 
             this.handlers = {
@@ -28,24 +31,63 @@ function withForm(Cmp, initialState) {
             }
         }
 
-        componentDidMount(){
+        componentDidMount() {
             this.setState((prevState) => {
-                return {common: {...prevState.common, firstRender: true}}
+                return { common: { ...prevState.common, firstRender: true } }
             })
         }
 
-        changeHandlerMaker = name => event => {
-            //TODO: add debouncing
-            const { value } = event.target
+        changeHandlerMaker = (name, type) => {
+            let id
 
-            this.setState(({ form }) => {
-                return {
-                    form: {
-                        ...form,
-                        [name]: value
-                    }
+            return (event) => {
+                if (id) {
+                    clearTimeout(id)
+                    id = undefined
                 }
-            })
+                const { value } = event.target
+
+                let validationPromise = ""
+
+                if (name === "repeatPassword") {
+                    // debugger
+                    validationPromise = validations[type].repeatPassword({
+                        password: this.state.form.password,
+                        repeatPassword: value
+                    })
+                } else {
+                    validationPromise = validations[type][name]({
+                        [name]: value
+                    })
+                }
+
+                // debugger
+                validationPromise.then(ok => {
+                    this.setState((prevState) => {
+                        return { errors: { ...prevState.errors, [name]: [] } }
+                    })
+                }).catch(errors => {
+                    // debugger
+                    if (errors.name === "ValidationError") {
+                        this.setState(prevState => {
+                            return { errors: { ...prevState.errors, [errors.path]: [errors.message] } }
+                        })
+                    }
+                })
+
+                id = setTimeout(() => {
+                    this.setState(({ form }) => {
+                        return {
+                            form: {
+                                ...form,
+                                [name]: value
+                            }
+                        }
+                    })
+
+                    id = undefined
+                }, 200)
+            }
         }
 
         submitHandlerMaker = (category, type) => event => {
@@ -54,16 +96,32 @@ function withForm(Cmp, initialState) {
             if (category === "user") {
                 const { username, password, repeatPassword } = this.state.form
 
-                userService.post[type](username, password, repeatPassword)
-                    .then(this.handlers[category][type])
-                    .catch(this.handlers.error)
+                const operation = repeatPassword ? "register" : "login"
+
+                validations.user[operation]({ username, password, repeatPassword }).then((ok) => {
+                    userService.post[type](username, password, repeatPassword)
+                        .then(this.handlers[category][type])
+                        .catch(this.handlers.error)
+                }).catch(err => {
+                    const errors = reduceErrors(err)
+
+                    // debugger
+                    this.setState({ errors })
+                })
+
+
             } else if (category === "bug") {
                 const bugData = this.state.form
-                // const { id } = this.state.common
-
-                bugService.post[type](bugData)
+                
+                validations.other.bug(bugData).then(ok => {
+                    bugService.post[type](bugData)
                     .then(this.handlers[category][type])
                     .catch(this.handlers.error)
+                }).catch(err => {
+                    const errors = reduceErrors(err)
+
+                    this.setState({errors})
+                })
             }
         }
 
@@ -116,9 +174,22 @@ function withForm(Cmp, initialState) {
             console.log("edited successfully!")
         }
 
-        errorHandler = userError => {
-            alert("something went wrong.. :")
-            console.log(userError)
+        getErrors = () => {
+            const result = this.state.errors
+            return result
+        }
+
+        errorHandler = call => {
+            const error = call.response.data.errors[0]
+            debugger
+            if ((call.response.status === 409) || (call.response.status===403)) {
+                return this.setState((prevState) => {
+                    prevState.errors["username"] = [error]
+                    return { errors: { ...prevState.errors } }
+                })
+            }
+
+            return console.log(error)
         }
 
         render() {
@@ -131,7 +202,8 @@ function withForm(Cmp, initialState) {
                 getCommon={this.getCommon}
                 updateCommon={this.updateCommon}
                 getCookie={this.getCookie}
-                setCookie={this.setCookies} />
+                setCookie={this.setCookies}
+                getErrors={this.getErrors} />
         }
     }
 }
