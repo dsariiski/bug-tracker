@@ -4,6 +4,7 @@ mongoose.Promise = Promise
 
 module.exports = () => {
     //require models..
+    require("../models/Comment")
     require("../models/User")
     require('../models/Bug')
 
@@ -12,6 +13,7 @@ module.exports = () => {
 
     return mongoose.connect(config.connectionString, {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useFindAndModify: false
     })
 }

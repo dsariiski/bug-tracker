@@ -3,13 +3,28 @@ body {
 }
 
 h1 {
-    margin: 5% 45% 6% 45%;;
+    margin: 2% 35% 2% 35%;
+    padding: 25px;
+    text-align: center;
 }
+
+.center {
+    margin: auto;
+    margin-top: 8%;
+    width: 25%;
+    height: 300px;
+    border: 2px solid rgb(189, 183, 183);
+    padding: 30px;
+    text-align: center;
+}
+
+
+
 
 /*
 form {
     margin-left: 40%;
-    margin-top: 200px;
+    margin-top: 200px;s
 }
 
 form button {

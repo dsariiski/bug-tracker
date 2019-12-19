@@ -7,29 +7,42 @@ import BugTable from "../../blocks/bugTable/BugTable"
 
 import bugService from "../../../utils/service/bug-service"
 
+import {parseCookies} from "../../../utils/helpers"
+
 class Home extends Component {
 
     constructor(props) {
         super(props)
 
         this.state = {
-            heading: "Welcome home",
+            username: "",
             content: [],
             bugs: []
         }
     }
 
     renderHeading = () => {
-        return <h1>{this.state.heading}</h1>
+        return <h1>Welcome {this.state.username || "home"}</h1>
+    }
+
+    getBugs = () => {
+        return this.state.bugs
+    }
+
+    setBugs = (bugs) => {
+        this.setState((prevState) => {
+            return {bugs}
+        })
     }
 
     renderContent = () => {
-        const titles = ["Title", "Description", "Author", "Actions"]
+        const titles = ["Id", "Title", "Description", "Status", "Author", "Actions"]
 
         const content2 = <BugTable
             tableName="bugs"
             titles={titles}
-            rows={this.state.bugs}
+            getBugs={this.getBugs}
+            setBugs={this.setBugs}
             entryName="bug" />
 
         return content2
@@ -49,6 +62,13 @@ class Home extends Component {
     }
 
     componentDidMount() {
+
+        const {username} = parseCookies()
+
+        if(username){
+            this.setState({username})
+        }
+
         bugService.get.all().then(bugs => {
             this.setState(() => {
                 return { bugs: bugs.data }
@@ -59,8 +79,14 @@ class Home extends Component {
         })
     }
 
-
     componentDidUpdate() {
+
+        const {username} = parseCookies()
+
+        if(username!==this.state.username){
+            this.setState({username})
+        }
+
         bugService.get.all().then(bugs => {
             this.setState((prevState) => {
                 const equal = this.equal(prevState, bugs)
@@ -69,13 +95,11 @@ class Home extends Component {
                     return { bugs: bugs.data }
                 }
             })
-
         }).catch(err => {
             console.log(`couldn't load bugs`)
             console.dir(err)
         })
     }
-
 
     render() {
         return <TemplatePage content={this.renderContent()} heading={this.renderHeading()} />

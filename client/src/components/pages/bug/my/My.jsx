@@ -27,7 +27,7 @@ class My extends Component {
     }
 
     renderContent = () => {
-        const titles = ["Title", "Description", "Author", "Actions"]
+        const titles = ["ID", "Title", "Description", "Status", "Author", "Actions"]
 
         let content = ""
 

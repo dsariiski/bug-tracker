@@ -8,12 +8,13 @@ module.exports = {
     get: {
         one,
         all,
-        my
+        my,
+        oneAndUpdate,
+        del
     },
     post: {
         create,
-        edit,
-        del
+        edit
     }
 }
 
@@ -32,22 +33,27 @@ function all(req, res) {
 
 function one(req, res) {
     //TODO: fix cast error
+    // console.log(req.params.id)
     const { id } = req.params
 
     //suboptimal - views update should be transferred to client-side
-    Bug.findByIdAndUpdate(id, { $inc: { "views": 1 } })
-        .populate('creator')
-        .then(bug => {
-            // bug.creator = bug.creator.username
-
-            res.status(200).type("json").send(bug)
+    Bug.findById(id).populate("creator").populate("comments")
+        .then(bugInfo => {
+            res.status(200).type("json").send(bugInfo)
+        }).catch(err => {
+            console.log("couldn't retrieve bug info...")
+            res.status(404).type("json").send(err.message)
         })
-        .catch((err) => {
-            if (suppressCastError("one[GET]", err)) {
-                return
-            }
-            console.log("one")
-            console.dir(err)
+}
+
+function oneAndUpdate(req, res) {
+    const { id } = req.params
+
+    Bug.findByIdAndUpdate(id, { $inc: { views: 1 } })
+        .then(incrementation => {
+            console.log("incremented!")
+        }).catch(err => {
+            console.log("couldn't update views...")
             res.status(404).type("json").send(err.message)
         })
 }
@@ -83,8 +89,7 @@ function create(req, res) {
             .then(userInfo => {
                 const { bugs } = userInfo
             }).catch(err => {
-                //TODO: return to front-end
-                console.log("couldn't update user")
+                res.status(401).type("json").send({ message: "couldn't update user" })
             })
 
         res.status(200).type("json").send({ message: "Bug reported successfully" })
@@ -92,11 +97,10 @@ function create(req, res) {
         if (suppressCastError("create", err)) {
             return
         }
-        console.dir(err)
+        // console.dir(err)
         res.status(404).type("json").send(err.message)
     })
 }
-
 
 function edit(req, res) {
     const id = req.params.id
@@ -104,24 +108,32 @@ function edit(req, res) {
 
     Bug.findByIdAndUpdate(id, { ...body })
         .then(newBug => {
-            // console.dir(newBug)
             res.status(200).type("json").send({ message: "Bug reported successfully" })
         })
         .catch((err) => {
             if (suppressCastError("edit", err)) {
                 return
             }
-            console.dir(err)
             res.status(404).type("json").send(err.message)
         })
 }
 
 function del(req, res) {
-    //TODO
+    const { id } = req.params
+
+    Bug.findByIdAndDelete(id).then(delInfo => {
+        console.log("deleted!")
+        // console.log(delInfo)
+        res.status(200).send({message: "deleted!"})
+    }).catch(err => {
+        console.log("couldn't delete bug...")
+        res.status(400).send({message: "couldn't delete bug!"})
+    })
 }
 
 function suppressCastError(origin, err) {
     if (err.name === "CastError" && err.value === 'undefined' && err.path === "_id") {
+        console.log(err.message)
         console.log(`[OK] - ${origin}`)
         return true
     }

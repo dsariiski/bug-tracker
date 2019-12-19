@@ -22,8 +22,8 @@ function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState,
     //TODO: add authentication
     const loggedIn = getCookie("userToken")
 
-    const changeTitleHandler = changeHandlerMaker("title", validationType)
-    const changeDescriptionHandler = changeHandlerMaker("description", validationType)
+    const changeTitleHandler = changeHandlerMaker("title", validationType, 0)
+    const changeDescriptionHandler = changeHandlerMaker("description", validationType, 0)
 
     const submitEditHandler = submitHandlerMaker("bug", "edit")
 
@@ -47,23 +47,20 @@ function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState,
             })
     }
 
-    const bug = getFormState()
-    // const views = getCommon("views")
+    // const bug = getFormState()
 
     const heading = <h1>Edit</h1>
-
-    //TODO: add edit auth
 
     const fields = [{
         id: "title",
         element: "input",
         type: "text",
-        value: bug.title,
+        valueGetter: getFormState,
         changeHandler: changeTitleHandler
     }, {
         id: "description",
         element: "",
-        value: bug.description,
+        valueGetter: getFormState,
         changeHandler: changeDescriptionHandler
     }]
 

@@ -44,6 +44,7 @@
 
 .bugs td a {
     padding: 5px;
+    text-decoration: none;
 }
 
 .bugs h5 {

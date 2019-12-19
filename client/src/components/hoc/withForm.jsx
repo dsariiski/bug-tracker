@@ -15,7 +15,8 @@ function withForm(Cmp, initialState) {
                 form: initialState.form,
                 common: { ...initialState.common || "" },
                 cookies: parseCookies(),
-                errors: {}
+                errors: {},
+                counter: 0
             }
 
             this.handlers = {
@@ -37,8 +38,12 @@ function withForm(Cmp, initialState) {
             })
         }
 
-        changeHandlerMaker = (name, type) => {
+        changeHandlerMaker = (name, type, time) => {
             let id
+
+            if(!time){
+                time = 0
+            }
 
             return (event) => {
                 if (id) {
@@ -86,7 +91,7 @@ function withForm(Cmp, initialState) {
                     })
 
                     id = undefined
-                }, 200)
+                }, time)
             }
         }
 
@@ -112,15 +117,15 @@ function withForm(Cmp, initialState) {
 
             } else if (category === "bug") {
                 const bugData = this.state.form
-                
+
                 validations.other.bug(bugData).then(ok => {
                     bugService.post[type](bugData)
-                    .then(this.handlers[category][type])
-                    .catch(this.handlers.error)
+                        .then(this.handlers[category][type])
+                        .catch(this.handlers.error)
                 }).catch(err => {
                     const errors = reduceErrors(err)
 
-                    this.setState({errors})
+                    this.setState({ errors })
                 })
             }
         }
@@ -182,7 +187,7 @@ function withForm(Cmp, initialState) {
         errorHandler = call => {
             const error = call.response.data.errors[0]
             debugger
-            if ((call.response.status === 409) || (call.response.status===403)) {
+            if ((call.response.status === 409) || (call.response.status === 403)) {
                 return this.setState((prevState) => {
                     prevState.errors["username"] = [error]
                     return { errors: { ...prevState.errors } }
@@ -191,6 +196,14 @@ function withForm(Cmp, initialState) {
 
             return console.log(error)
         }
+
+        // componentDidUpdate(){
+        //     console.log(this.state.counter)
+
+        //     // this.setState((prevState) => {
+        //     //     return {count: prevState.count + 1}
+        //     // })
+        // }
 
         render() {
             return <Cmp

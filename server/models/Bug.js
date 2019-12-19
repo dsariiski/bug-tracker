@@ -5,6 +5,7 @@ const bugSchema = {
     description: { type: mongoose.SchemaTypes.String, required: [true, "Description is required!"] },
     status: { type: mongoose.SchemaTypes.String, enum: ['fixed', 'confirmed', 'pending'], default: "pending" },
     views: { type: mongoose.SchemaTypes.Number, default: 1 },
+    comments: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Comment" }],
     creator: { type: mongoose.SchemaTypes.ObjectId, ref: "User" }
 }
 

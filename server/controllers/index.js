@@ -1,7 +1,9 @@
 const cAuth = require("./auth")
 const cBug = require("./bug")
+const cComment = require("./comment")
 
 module.exports = {
     auth: cAuth,
-    bug: cBug
+    bug: cBug,
+    comment: cComment
 }

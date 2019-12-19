@@ -9,7 +9,7 @@ function Input({ id, type, changeHandler, value }) {
                 {id[0].toUpperCase() + id.slice(1)}:
             </label>
             <input id={id}
-                value={value}
+                value={value || undefined}
                 type={type}
                 onChange={changeHandler} />
         </div>

@@ -20,6 +20,8 @@ function errorHandler(err) {
     console.warn("Something went wrong")
 
     console.dir(err)
+
+    console.log(err.toString())
 }
 
 function reduceErrors (errors) {

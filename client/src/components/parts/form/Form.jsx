@@ -11,12 +11,14 @@ import "./form.css"
 function Form({ id, title, submitName, fields, submitHandler, register, login, errors }) {
     // debugger
     fields = fields.map((field) => {
+        // debugger
+        // console.log(field.valueGetter())
         if (field.element.toLowerCase() === "input") {
             return (<React.Fragment key={field.id + "123"}>
                 <Input id={field.id}
                     type={field.type}
                     changeHandler={field.changeHandler}
-                    value={field.value}
+                    value={field.valueGetter ? field.valueGetter()[field.id] : null}
                     key={field.id} />
                 <Errors errors={errors[field.id]} />
             </React.Fragment>)
@@ -25,7 +27,7 @@ function Form({ id, title, submitName, fields, submitHandler, register, login, e
                 <Textarea id={field.id}
                     changeHandler={field.changeHandler}
                     form={id}
-                    value={field.value}
+                    value={field.valueGetter ? field.valueGetter()[field.id] : null}
                     key={field.id} />
                 <Errors errors={errors[field.id]} />
             </React.Fragment>)
