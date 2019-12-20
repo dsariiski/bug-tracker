@@ -55,7 +55,6 @@ function withForm(Cmp, initialState) {
                 let validationPromise = ""
 
                 if (name === "repeatPassword") {
-                    // debugger
                     validationPromise = validations[type].repeatPassword({
                         password: this.state.form.password,
                         repeatPassword: value
@@ -66,13 +65,11 @@ function withForm(Cmp, initialState) {
                     })
                 }
 
-                // debugger
                 validationPromise.then(ok => {
                     this.setState((prevState) => {
                         return { errors: { ...prevState.errors, [name]: [] } }
                     })
                 }).catch(errors => {
-                    // debugger
                     if (errors.name === "ValidationError") {
                         this.setState(prevState => {
                             return { errors: { ...prevState.errors, [errors.path]: [errors.message] } }
@@ -110,7 +107,6 @@ function withForm(Cmp, initialState) {
                 }).catch(err => {
                     const errors = reduceErrors(err)
 
-                    // debugger
                     this.setState({ errors })
                 })
 
@@ -186,7 +182,6 @@ function withForm(Cmp, initialState) {
 
         errorHandler = call => {
             const error = call.response.data.errors[0]
-            debugger
             if ((call.response.status === 409) || (call.response.status === 403)) {
                 return this.setState((prevState) => {
                     prevState.errors["username"] = [error]
@@ -196,14 +191,6 @@ function withForm(Cmp, initialState) {
 
             return console.log(error)
         }
-
-        // componentDidUpdate(){
-        //     console.log(this.state.counter)
-
-        //     // this.setState((prevState) => {
-        //     //     return {count: prevState.count + 1}
-        //     // })
-        // }
 
         render() {
             return <Cmp

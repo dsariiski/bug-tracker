@@ -19,7 +19,6 @@ function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState,
 
     const validationType = "other"
 
-    //TODO: add authentication
     const loggedIn = getCookie("userToken")
 
     const changeTitleHandler = changeHandlerMaker("title", validationType, 0)
@@ -47,8 +46,6 @@ function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState,
             })
     }
 
-    // const bug = getFormState()
-
     const heading = <h1>Edit</h1>
 
     const fields = [{
@@ -74,7 +71,7 @@ function Edit({ changeHandlerMaker, submitHandlerMaker, getFormState,
     if (loggedIn) {
         return <TemplatePage heading={heading} content={editForm} />
     } else {
-        history.go(-1)
+        history.push("/")
         return <Redirect to={history.location.pathname} />
     }
 }

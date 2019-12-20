@@ -36,16 +36,6 @@ function validatePassword({ password }) {
 }
 
 function validateRePassword({ password, repeatPassword }) {
-    // const passBlueprint = makeBlueprint("password")
-    // const reBlueprint = makeBlueprint("repeatPassword")
-
-    // const reSchema = yup.object({
-    //     password: passBlueprint,
-    //     repeatPassword: reBlueprint
-    // })
-
-    // return reSchema.validate({ password, repeatPassword })
-
     return password === repeatPassword ?
         Promise.resolve("Passwords are equal!") :
         Promise.reject({ name: "ValidationError", path: "repeatPassword", message: "Passwords don't match!" })

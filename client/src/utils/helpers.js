@@ -31,7 +31,6 @@ function reduceErrors (errors) {
             errAccumulator = {}
         }
 
-        // debugger
         let { errors, path } = currentErr
 
         if (!errAccumulator[path]) {

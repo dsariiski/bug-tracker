@@ -7,7 +7,7 @@ import withForm from "../../../hoc/withForm"
 import Form from "../../../parts/form/Form"
 
 function Create(props) {
-    const { changeHandlerMaker, submitHandlerMaker, getCookie, getErrors } = props
+    const { changeHandlerMaker, submitHandlerMaker, getCookie, getErrors, history } = props
 
     const validationType = "other"
 
@@ -42,6 +42,7 @@ function Create(props) {
     if (loggedIn) {
         return <TemplatePage content={createForm} />
     } else {
+        history.push("/bug/create")
         return <Redirect to="/login" />
     }
 }

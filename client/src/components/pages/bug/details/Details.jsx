@@ -23,7 +23,7 @@ function Details(props) {
     const [comment, setComment] = useState("")
 
     const creatorName = parseCookies().username
-    // const token = parseCookies().userToken
+    const loggedIn = parseCookies().userToken
 
     function getBugsFromDb() {
         bugService.get.bug(bug._id)
@@ -129,14 +129,20 @@ function Details(props) {
         <button className="comment-btn" type="submit">Comment</button>
     </form>
 
+    const addCommentSection = <React.Fragment>
+        {addCommentHeading}
+        {addComment}
+    </React.Fragment>
+
     const content = <React.Fragment>
         {bugDiv}
 
         {commentsHeading}
         {commentsContent}
 
-        {addCommentHeading}
-        {addComment}
+        {loggedIn ? 
+        addCommentSection : null}
+        
     </React.Fragment>
 
     return (

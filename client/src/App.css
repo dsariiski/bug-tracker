@@ -18,7 +18,18 @@ h1 {
     text-align: center;
 }
 
+.confirmed {
+    color: red;
+}
 
+.fixed {
+    color: green;
+}
+
+.boss-button {
+    margin: 0% 47% ;
+    padding: 15px;
+}
 
 
 /*

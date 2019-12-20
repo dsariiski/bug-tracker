@@ -7,7 +7,7 @@ import BugTable from "../../blocks/bugTable/BugTable"
 
 import bugService from "../../../utils/service/bug-service"
 
-import {parseCookies} from "../../../utils/helpers"
+import { parseCookies } from "../../../utils/helpers"
 
 class Home extends Component {
 
@@ -17,7 +17,8 @@ class Home extends Component {
         this.state = {
             username: "",
             content: [],
-            bugs: []
+            bugs: [],
+            updates: []
         }
     }
 
@@ -31,7 +32,7 @@ class Home extends Component {
 
     setBugs = (bugs) => {
         this.setState((prevState) => {
-            return {bugs}
+            return { bugs }
         })
     }
 
@@ -43,6 +44,8 @@ class Home extends Component {
             titles={titles}
             getBugs={this.getBugs}
             setBugs={this.setBugs}
+            getUpdates={this.getUpdates}
+            setUpdates={this.setUpdates}
             entryName="bug" />
 
         return content2
@@ -61,12 +64,21 @@ class Home extends Component {
         return true
     }
 
+    setUpdates = (updates) => {
+        this.setState((prevState) => {
+            return { updates: {...prevState.updates, ...updates} }
+        })
+    }
+
+    getUpdates = () => {
+        return this.state.updates
+    }
+
     componentDidMount() {
+        const { username } = parseCookies()
 
-        const {username} = parseCookies()
-
-        if(username){
-            this.setState({username})
+        if (username) {
+            this.setState({ username })
         }
 
         bugService.get.all().then(bugs => {
@@ -80,11 +92,10 @@ class Home extends Component {
     }
 
     componentDidUpdate() {
+        const { username } = parseCookies()
 
-        const {username} = parseCookies()
-
-        if(username!==this.state.username){
-            this.setState({username})
+        if (username !== this.state.username) {
+            this.setState({ username })
         }
 
         bugService.get.all().then(bugs => {
@@ -104,7 +115,6 @@ class Home extends Component {
     render() {
         return <TemplatePage content={this.renderContent()} heading={this.renderHeading()} />
     }
-
 }
 
 export default Home
