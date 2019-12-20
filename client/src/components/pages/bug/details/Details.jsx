@@ -13,7 +13,12 @@ import { parseCookies, errorHandler } from "../../../../utils/helpers"
 let first = true
 
 function Details(props) {
+    const currentHistory = props.history.length
+
+    console.log(props)
     // let load = props.match.params.load
+
+    const [history, setHistory] = useState(false)
 
     const { id } = props.match.params
     const [bug, setBug] = useState({ _id: id, comments: null, creator: "" })
@@ -44,22 +49,35 @@ function Details(props) {
                 }
 
                 // debugger
-                // if (((bug.comments || [1]).length !== data.comments.length)) {
+
+                if (!bug.comments || bug.comments.length !== data.comments.length) {
                     setBug(data)
-                    if(data.comments.length===0){
+                    if (data.comments.length === 0) {
                         data.comments = undefined
                     }
+                }
+
+                // if (((bug.comments || []).length !== data.comments.length)) {
+
                 // }
             }).catch(errorHandler)
     }
 
-    function incrementView(){
+    function incrementView() {
         bugService.get.updateViews(id)
-        .then(response => {
-            console.log("updated stuff")
-        }).catch(err => {
-            console.log("something went wrong...")
-        })
+            .then(response => {
+                console.log("updated stuff")
+            }).catch(err => {
+                console.log("something went wrong...")
+            })
+    }
+
+    if (currentHistory !== history) {
+        getBugFromDb()
+
+        incrementView()
+
+        setHistory(currentHistory)
     }
 
     if (first) {
@@ -68,6 +86,8 @@ function Details(props) {
         getBugFromDb()
 
         incrementView()
+
+        setHistory(currentHistory)
     }
 
     const heading = <h1>Details</h1>

@@ -46,7 +46,7 @@ function BugTable({ tableName, titles, getBugs, setBugs, entryName, getUpdates, 
                                 <Link to={`/bug/${entry._id}`}>{entry.title}</Link>
                             </td>
                             <td key={`description ${firstLetters}`}>
-                                {entry.description.substring(0, 15)}...
+                                {entry.description.length > 10 ? entry.description.substring(0, 10) + "..." : entry.description}
                             </td>
                             <td key={`status ${firstLetters}`} className={admin ? "" : entry.status.toLowerCase()}>
                                 {admin ? <select value={initialStatus} onChange={(event) => {

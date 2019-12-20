@@ -70,7 +70,7 @@ function withForm(Cmp, initialState) {
                 }
 
                 //omitting real-time validations when logging in
-                // if(!omitValidations){
+                if(!omitValidations){
                 validationPromise.then(ok => {
                     this.setState((prevState) => {
                         return { errors: { ...prevState.errors, [name]: [] } }
@@ -82,7 +82,7 @@ function withForm(Cmp, initialState) {
                         })
                     }
                 })
-                // }
+                }
 
                 id = setTimeout(() => {
                     this.setState(({ form }) => {

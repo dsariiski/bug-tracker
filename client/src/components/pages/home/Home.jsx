@@ -23,6 +23,7 @@ class Home extends Component {
     }
 
     renderHeading = () => {
+        console.log(this.props)
         return <h1>Welcome {this.state.username || "home"}</h1>
     }
 
