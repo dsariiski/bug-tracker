@@ -10,10 +10,10 @@ function Login({ changeHandlerMaker, submitHandlerMaker, getCookie, history, get
     const loggedIn = getCookie("userToken")
 
     const validationType = "user"
+    const omitValidations = true
 
-
-    const changeUsernameHandler = changeHandlerMaker("username", validationType)
-    const changePasswordHandler = changeHandlerMaker("password", validationType)
+    const changeUsernameHandler = changeHandlerMaker("username", validationType, 100, omitValidations)
+    const changePasswordHandler = changeHandlerMaker("password", validationType, 100, omitValidations)
 
     const submitLoginHandler = submitHandlerMaker("user", "login")
 
@@ -40,8 +40,7 @@ function Login({ changeHandlerMaker, submitHandlerMaker, getCookie, history, get
     if (!loggedIn) {
         return <TemplatePage content={loginForm} />
     } else {
-        //redirects user to previous page
-        history.go(-1)
+        history.push("/")
         return <Redirect to={history.location.pathname} />
     }
 }

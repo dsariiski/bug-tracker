@@ -4,6 +4,8 @@ import { parseCookies, reduceErrors } from "../../utils/helpers"
 import userService from "../../utils/service/user-service"
 import bugService from "../../utils/service/bug-service"
 
+import { store } from 'react-notifications-component';
+
 import validations from "../../utils/validation"
 
 function withForm(Cmp, initialState) {
@@ -38,10 +40,12 @@ function withForm(Cmp, initialState) {
             })
         }
 
-        changeHandlerMaker = (name, type, time) => {
+        changeHandlerMaker = (name, type, time, omitValidations) => {
             let id
 
-            if(!time){
+            // debugger
+
+            if (!time) {
                 time = 0
             }
 
@@ -65,6 +69,8 @@ function withForm(Cmp, initialState) {
                     })
                 }
 
+                //omitting real-time validations when logging in
+                // if(!omitValidations){
                 validationPromise.then(ok => {
                     this.setState((prevState) => {
                         return { errors: { ...prevState.errors, [name]: [] } }
@@ -76,6 +82,7 @@ function withForm(Cmp, initialState) {
                         })
                     }
                 })
+                // }
 
                 id = setTimeout(() => {
                     this.setState(({ form }) => {
@@ -155,24 +162,81 @@ function withForm(Cmp, initialState) {
         }
 
         loginResolve = userInfo => {
+            const { username } = userInfo.data
             const updatedCookies = parseCookies()
             this.setCookies(updatedCookies)
 
-            this.props.history.go(-1)
+            this.props.history.push("/")
 
-            console.log(`Welcome ${userInfo.data.username}`)
+            store.addNotification({
+                title: "Welcome",
+                message: `${username}`,
+                type: "success",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 2000,
+                    onScreen: false
+                }
+            })
+
         }
 
         registerResolve = userInfo => {
-            console.log(`Registered successfully!`)
+            // console.log(`Registered successfully!`)
+
+            store.addNotification({
+                message: `Registration successful!`,
+                type: "success",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 2000,
+                    onScreen: false
+                }
+            })
         }
 
         createBugResolve = bug => {
-            console.log(`${bug.data.message}`)
+            this.props.history.push("/my")
+
+            store.addNotification({
+                message: `Report submitted!`,
+                type: "info",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 2000,
+                    onScreen: false
+                }
+            })
+
+            // console.log(`${bug.data.message}`)
         }
 
         editBugResolve = bug => {
-            console.log("edited successfully!")
+            // console.log("edited successfully!")
+
+            this.props.history.push(`/my`)
+
+            store.addNotification({
+                message: `Edit successful!`,
+                type: "warning",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 2000,
+                    onScreen: false
+                }
+            })
         }
 
         getErrors = () => {

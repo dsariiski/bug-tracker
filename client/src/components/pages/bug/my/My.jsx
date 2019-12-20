@@ -36,7 +36,7 @@ class My extends Component {
                 this.setState(() => {
                     return {
                         first: false,
-                        heading: "Submissions:"
+                        heading: "My submissions:"
                     }
                 })
             }
@@ -44,11 +44,34 @@ class My extends Component {
             content = <BugTable
                 tableName="bugs"
                 titles={titles}
-                rows={this.state.bugs}
+                getBugs={this.getBugs}
+                setBugs={this.setBugs}
+                getUpdates={this.getUpdates}
+                setUpdates={this.setUpdates}
                 entryName="bug" />
         }
 
         return content
+    }
+
+    getBugs = () => {
+        return this.state.bugs
+    }
+
+    setBugs = (bugs) => {
+        this.setState((prevState) => {
+            return { bugs }
+        })
+    }
+
+    setUpdates = (updates) => {
+        this.setState((prevState) => {
+            return { updates: {...prevState.updates, ...updates} }
+        })
+    }
+
+    getUpdates = () => {
+        return this.state.updates || {}
     }
 
     componentDidMount() {

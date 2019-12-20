@@ -1,11 +1,13 @@
 import React from "react"
 
-import { Link, Redirect } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 import { parseCookies, first2Letters } from "../../../utils/helpers"
 
 import "./bugTable.css"
 import bugService from "../../../utils/service/bug-service"
+
+import { store } from 'react-notifications-component';
 
 function BugTable({ tableName, titles, getBugs, setBugs, entryName, getUpdates, setUpdates }) {
     const owner = parseCookies().username
@@ -28,9 +30,12 @@ function BugTable({ tableName, titles, getBugs, setBugs, entryName, getUpdates, 
                 </thead>
                 <tbody>
                     {rows.map(entry => {
+                        //key generation
                         const firstLetters = first2Letters(entry._id)
 
                         let initialStatus = getUpdates()[entry._id] || entry.status
+
+                        // debugger
 
                         return <tr key={entry._id}>
                             <td key={`id ${firstLetters}`}>
@@ -38,7 +43,7 @@ function BugTable({ tableName, titles, getBugs, setBugs, entryName, getUpdates, 
                                 {entry._id}
                             </td>
                             <td key={`title ${firstLetters}`}>
-                                <Link to={`/bug/${entry._id}/load`}>{entry.title}</Link>
+                                <Link to={`/bug/${entry._id}`}>{entry.title}</Link>
                             </td>
                             <td key={`description ${firstLetters}`}>
                                 {entry.description.substring(0, 15)}...
@@ -47,9 +52,7 @@ function BugTable({ tableName, titles, getBugs, setBugs, entryName, getUpdates, 
                                 {admin ? <select value={initialStatus} onChange={(event) => {
                                     const { value } = event.target
 
-                                    setUpdates([
-                                        { [entry._id]: value }
-                                    ])
+                                    setUpdates({ [entry._id]: value })
                                 }}>
                                     <option value="pending">pending</option>}
                                     <option value="confirmed">confirmed</option>}
@@ -57,7 +60,7 @@ function BugTable({ tableName, titles, getBugs, setBugs, entryName, getUpdates, 
                                 </select> : entry.status}
                             </td>
                             <td key={`author ${firstLetters}`}>
-                                {entry.creator.username}
+                                <h5>{entry.creator.username}</h5>
                             </td>
                             {loggedIn ? <td key={`actions ${firstLetters}`}>
                                 {admin || (owner === entry.creator.username) ?
@@ -77,8 +80,23 @@ function BugTable({ tableName, titles, getBugs, setBugs, entryName, getUpdates, 
                                                                 }
                                                             })
                                                             setBugs(rows)
+
+                                                            // store.addNotification({
+                                                            //     // title: `Report`,
+                                                            //     message: "Report deleted",
+                                                            //     type: "danger",
+                                                            //     insert: "top",
+                                                            //     container: "top-right",
+                                                            //     animationIn: ["animated", "fadeIn"],
+                                                            //     animationOut: ["animated", "fadeOut"],
+                                                            //     dismiss: {
+                                                            //       duration: 2000,
+                                                            //       onScreen: false
+                                                            //     }
+                                                            // })
                                                         }).catch(err => {
                                                             console.log("couldn't delete")
+                                                            console.log(err)
                                                         })
                                                 }
                                             }}>&#10005;</Link>
@@ -98,18 +116,32 @@ function BugTable({ tableName, titles, getBugs, setBugs, entryName, getUpdates, 
                         const updates = getUpdates()
 
                         let promises = []
-                        
-                        for (let update in updates){
-                            const _id = Object.keys(updates[update])[0]
-                            const val = update[_id]
+
+                        for (let update in updates) {
+                            const _id = update
+                            const val = updates[update]
 
                             promises.push(bugService.post.edit({ _id, status: val }))
                         }
-                        
+
                         Promise.all([promises])
                             .then(rezult => {
                                 console.log("update finished")
-                                console.log(rezult)
+                                // console.log(rezult)
+
+                                store.addNotification({
+                                    // title: `Report`,
+                                    message: "Changes saved.",
+                                    type: "info",
+                                    insert: "top",
+                                    container: "top-right",
+                                    animationIn: ["animated", "fadeIn"],
+                                    animationOut: ["animated", "fadeOut"],
+                                    dismiss: {
+                                        duration: 2000,
+                                        onScreen: false
+                                    }
+                                })
                             }).catch(err => {
                                 console.log("couldn't finish update")
                                 console.log(err)

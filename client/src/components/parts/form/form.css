@@ -32,7 +32,7 @@ form a {
     float: left;
     text-align: right;
     margin-top: 1.5%;
-    margin-left: 15%;
+    margin-left: 12%;
 }
 
 .pair input {
@@ -55,8 +55,8 @@ form a {
     display: inline;
     float: left;
     text-align: right;
-    margin-top: 10%;
-    margin-left: 15%;
+    margin-top: 7%;
+    margin-left: 12%;
 }
 
 .ta textarea {
@@ -69,7 +69,8 @@ form a {
     border: none;
     background-color: rgb(189, 183, 183);
     padding: 15px;
-    text-align: center;
+    resize: none;
+    /* text-align: center; */
 }
 
 form h2 {

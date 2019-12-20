@@ -7,7 +7,7 @@ function makeBlueprint(value) {
             .required("Title is required"),
         description: yup.string()
             .min(4, "Description must be at least 4 symbols long")
-            .required("Description is required"),
+            .required("Description is required")
     }
 
     return values[value]
@@ -42,11 +42,21 @@ function validateBug({title, description}){
     return bugSchema.validate({title, description})
 }
 
+function validateExpected(){
+    return Promise.resolve()
+}
+
+function validateSteps(){
+    return Promise.resolve()
+}
+
 
 const validations = {
     title: validateTitle,
     description: validateDescription,
-    bug: validateBug
+    bug: validateBug,
+    expected: validateExpected,
+    steps: validateSteps
 }
 
 export default validations

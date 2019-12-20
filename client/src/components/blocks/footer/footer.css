@@ -1,6 +1,10 @@
 .footer {
     padding: 25px;
+    /* position: sticky; */
+    /* position:absolute; */
     position: fixed;
+    margin-top:1000px;
+    display: block;
     left: 0;
     bottom: 0;
     margin: 0 8.7%;

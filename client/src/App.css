@@ -11,6 +11,7 @@ h1 {
 .center {
     margin: auto;
     margin-top: 8%;
+    margin-bottom: 9.5%;
     width: 25%;
     height: 300px;
     border: 2px solid rgb(189, 183, 183);
@@ -26,11 +27,19 @@ h1 {
     color: green;
 }
 
+.pending {
+    color: rgb(211, 146, 6);
+}
+
 .boss-button {
     margin: 0% 47% ;
+    margin-bottom: 400%;
     padding: 15px;
 }
 
+a:visited {
+    color: #1004cc;
+}
 
 /*
 form {

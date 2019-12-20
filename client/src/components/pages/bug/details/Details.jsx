@@ -13,10 +13,10 @@ import { parseCookies, errorHandler } from "../../../../utils/helpers"
 let first = true
 
 function Details(props) {
-    let load = props.match.params.load
+    // let load = props.match.params.load
 
     const { id } = props.match.params
-    const [bug, setBug] = useState({ _id: id, creator: "" })
+    const [bug, setBug] = useState({ _id: id, comments: null, creator: "" })
     const [authorized, setAuthorized] = useState(false)
     const [authenticated, setAuthenticated] = useState(false)
 
@@ -25,9 +25,10 @@ function Details(props) {
     const creatorName = parseCookies().username
     const loggedIn = parseCookies().userToken
 
-    function getBugsFromDb() {
+    function getBugFromDb() {
         bugService.get.bug(bug._id)
             .then(({ data }) => {
+                // debugger
                 if (first) {
                     bugService.get.updateViews(id)
                     first = false
@@ -42,17 +43,31 @@ function Details(props) {
                     setAuthorized(true)
                 }
 
-                if (((bug.comments || [1]).length !== data.comments.length)) {
+                // debugger
+                // if (((bug.comments || [1]).length !== data.comments.length)) {
                     setBug(data)
-                }
+                    if(data.comments.length===0){
+                        data.comments = undefined
+                    }
+                // }
             }).catch(errorHandler)
     }
 
-    if (first || load) {
-        first = false
-        load = false
+    function incrementView(){
+        bugService.get.updateViews(id)
+        .then(response => {
+            console.log("updated stuff")
+        }).catch(err => {
+            console.log("something went wrong...")
+        })
+    }
 
-        getBugsFromDb()
+    if (first) {
+        first = false
+
+        getBugFromDb()
+
+        incrementView()
     }
 
     const heading = <h1>Details</h1>
@@ -64,16 +79,16 @@ function Details(props) {
                 <span className="content">{bug.description}</span>
             </div>
             <div className="row-pair">
-                <span className="label">Views:</span>
-                <span className="content">{bug.views}</span>
+                <span className="label creator">Views:</span>
+                <span className="content creator">{bug.views}</span>
             </div>
             <div className="row-pair">
-                <span className="label">Status:</span>
-                <span className="content">{bug.status}</span>
+                <span className="label creator">Status:</span>
+                <span className={`content creator ${bug.status}`}>{bug.status}</span>
             </div>
             <div className="row-pair">
-                <span className="label">Creator:</span>
-                <span className="content">{bug.creator.username}</span>
+                <span className="label creator">Creator:</span>
+                <span className="content creator">{bug.creator.username}</span>
             </div>
         </div>
 
@@ -92,6 +107,7 @@ function Details(props) {
 
     const commentsHeading = <h2 className="comments-heading">Comments:</h2>
 
+    // debugger
     const commentsContent = <div className="comments center">
         {bug.comments ? bug.comments.map(comment => <Comment key={comment._id} {...comment} />) : <h2>There are no comments yet...</h2>}
     </div>
@@ -109,20 +125,21 @@ function Details(props) {
 
             bugService.post.comment(commentBody).then(rezult => {
                 console.log("comment created successfully!")
-                first = true
+                // first = true
 
+                debugger
                 setComment("")
 
-                getBugsFromDb()
-
+                getBugFromDb()
             }).catch(err => {
+                console.log(err)
                 console.log("couldn't create comment")
-                // console.dir(err)
             })
         }
     }}>
         <input type="text" value={comment} onChange={(event) => {
             let { value } = event.target
+            // console.log(value)
 
             setComment(value)
         }} />
@@ -140,9 +157,9 @@ function Details(props) {
         {commentsHeading}
         {commentsContent}
 
-        {loggedIn ? 
-        addCommentSection : null}
-        
+        {loggedIn ?
+            addCommentSection : null}
+
     </React.Fragment>
 
     return (

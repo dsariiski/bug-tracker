@@ -18,7 +18,7 @@ class Home extends Component {
             username: "",
             content: [],
             bugs: [],
-            updates: []
+            updates: {}
         }
     }
 
@@ -71,6 +71,7 @@ class Home extends Component {
     }
 
     getUpdates = () => {
+        // debugger
         return this.state.updates
     }
 

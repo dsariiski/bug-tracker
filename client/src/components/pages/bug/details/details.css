@@ -12,7 +12,7 @@
 .bug h2 {
     /* TODO: beautify*/
     color: rgb(54, 54, 54);
-    background-color: grey;
+    /* background-color: #d3d3d3; */
     border-radius: 5px;
     width: 40%;
     margin: 5% 30%;
@@ -43,6 +43,13 @@
     padding: 15px;
     margin: 3% 10%;
     width: 30%;
+}
+
+/*common-ish */
+
+.creator {
+    font-weight: bold;
+    font-size: 15px;
 }
 
 /*comments styles*/
@@ -90,8 +97,8 @@
 
 .comment-form {
     margin-top: 0%;
-    margin-bottom: 5%;
-    min-height: 0%;
+    margin-bottom: 20%;
+    min-height: 30%;
     height: 30%;
     width: 15%;
     /* border: 2px solid black; */

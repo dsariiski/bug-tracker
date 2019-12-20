@@ -22,7 +22,7 @@ function Router() {
         <Route path="/create" exact component={Create} />
         <Route path="/bug/edit/:id" exact component={Edit} />
         <Route path="/bug/delete/:id" exact />
-        <Route path="/bug/:id/:load" component={Details} />
+        {/* <Route path="/bug/:id/:load" component={Details} /> */}
         <Route path="/bug/:id" component={Details} />
         <Route path="/logout" component={Logout} />
     </Switch>)

@@ -11,7 +11,8 @@ function Logout({ history }) {
 
     if (loggedIn) {
         userService.get.logout().then(loggedOut => {
-            console.log(loggedOut)
+            // console.log(loggedOut)
+            console.log("logged out")
             history.push("/")
         }).catch(err => {
             console.log("couldn't log out")

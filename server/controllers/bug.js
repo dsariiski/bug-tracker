@@ -80,7 +80,7 @@ function create(req, res) {
     const jwt = req.cookies.userToken
     const userToken = decodeToken(jwt)
 
-    const creator = userToken.id ? userToken.id : undefined
+    const creator = userToken.id ? userToken.id : "admin"
 
     const bugBody = { title, description, status, creator }
 
@@ -108,7 +108,7 @@ function edit(req, res) {
 
     Bug.findByIdAndUpdate(id, { ...body })
         .then(newBug => {
-            res.status(200).type("json").send({ message: "Bug reported successfully" })
+            res.status(200).type("json").send({ _id: id, message: "Bug reported successfully" })
         })
         .catch((err) => {
             if (suppressCastError("edit", err)) {

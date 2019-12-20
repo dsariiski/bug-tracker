@@ -14,7 +14,7 @@ function bug(id) {
     return axios.get(getBugUrl)
 }
 
-function updateViews(id){
+function updateViews(id) {
     const updateBugUrl = baseUrl + `bug/update/${id}`
 
     return axios.get(updateBugUrl)
@@ -36,6 +36,10 @@ function create({ title, description }) {
         status: undefined
     }
 
+    // debugger
+
+    // return
+
     return axios.post(createUrl, JSON.stringify(bugBody), {
         headers: {
             "Content-Type": "application/json"
@@ -52,6 +56,8 @@ function edit(newData) {
 
     const bugBody = { title, description, status, views }
 
+    debugger
+
     return axios.post(editUrl, JSON.stringify(bugBody), {
         headers: {
             "Content-Type": "application/json"
@@ -61,7 +67,7 @@ function edit(newData) {
 }
 
 function comment(commentBody) {
-    const { bugId } = commentBody 
+    const { bugId } = commentBody
     const commentUrl = baseUrl + "bug/comment/" + bugId
 
     return axios.post(commentUrl, JSON.stringify(commentBody), {
@@ -72,7 +78,7 @@ function comment(commentBody) {
     })
 }
 
-function delBug(id){
+function delBug(id) {
     const deleteUrl = baseUrl + "bug/delete/" + id
 
     console.log(deleteUrl)
