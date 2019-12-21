@@ -26,6 +26,8 @@ function errorHandler(err) {
 
 function reduceErrors (errors) {
     errors = errors.inner
+
+
     return errors.reduce((errAccumulator, currentErr, currentIndex) => {
         if (currentIndex === 0) {
             errAccumulator = {}

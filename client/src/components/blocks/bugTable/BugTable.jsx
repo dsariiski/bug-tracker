@@ -35,8 +35,6 @@ function BugTable({ tableName, titles, getBugs, setBugs, entryName, getUpdates, 
 
                         let initialStatus = getUpdates()[entry._id] || entry.status
 
-                        // debugger
-
                         return <tr key={entry._id}>
                             <td key={`id ${firstLetters}`}>
                                 {/* {entry._id.substring(0, 5)}... */}
@@ -81,19 +79,19 @@ function BugTable({ tableName, titles, getBugs, setBugs, entryName, getUpdates, 
                                                             })
                                                             setBugs(rows)
 
-                                                            // store.addNotification({
-                                                            //     // title: `Report`,
-                                                            //     message: "Report deleted",
-                                                            //     type: "danger",
-                                                            //     insert: "top",
-                                                            //     container: "top-right",
-                                                            //     animationIn: ["animated", "fadeIn"],
-                                                            //     animationOut: ["animated", "fadeOut"],
-                                                            //     dismiss: {
-                                                            //       duration: 2000,
-                                                            //       onScreen: false
-                                                            //     }
-                                                            // })
+                                                            store.addNotification({
+                                                                // title: `Report`,
+                                                                message: "Report deleted",
+                                                                type: "danger",
+                                                                insert: "top",
+                                                                container: "top-right",
+                                                                animationIn: ["animated", "fadeIn"],
+                                                                animationOut: ["animated", "fadeOut"],
+                                                                dismiss: {
+                                                                  duration: 2000,
+                                                                  onScreen: false
+                                                                }
+                                                            })
                                                         }).catch(err => {
                                                             console.log("couldn't delete")
                                                             console.log(err)

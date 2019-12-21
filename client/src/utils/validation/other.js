@@ -13,25 +13,25 @@ function makeBlueprint(value) {
     return values[value]
 }
 
-function validateTitle({title}){
+function validateTitle({ title }) {
     const titleBlueprint = makeBlueprint("title")
     const titleSchema = yup.object({
         title: titleBlueprint
     })
 
-    return titleSchema.validate({title})
+    return titleSchema.validate({ title })
 }
 
-function validateDescription({description}){
+function validateDescription({ description }) {
     const descriptionBlueprint = makeBlueprint("description")
     const descriptionSchema = yup.object({
         description: descriptionBlueprint
     })
 
-    return descriptionSchema.validate({description})
+    return descriptionSchema.validate({ description })
 }
 
-function validateBug({title, description}){
+function validateBug({ title, description }) {
     const titleBlueprint = makeBlueprint("title")
     const descriptionBlueprint = makeBlueprint("description")
     const bugSchema = yup.object({
@@ -39,24 +39,13 @@ function validateBug({title, description}){
         description: descriptionBlueprint
     })
 
-    return bugSchema.validate({title, description})
+    return bugSchema.validate({ title, description }, { abortEarly: false })
 }
-
-function validateExpected(){
-    return Promise.resolve()
-}
-
-function validateSteps(){
-    return Promise.resolve()
-}
-
 
 const validations = {
     title: validateTitle,
     description: validateDescription,
-    bug: validateBug,
-    expected: validateExpected,
-    steps: validateSteps
+    bug: validateBug
 }
 
 export default validations

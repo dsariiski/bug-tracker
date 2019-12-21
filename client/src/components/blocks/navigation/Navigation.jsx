@@ -13,9 +13,6 @@ function Navigation(props) {
             <li className="group">
                 <Link to="/" className="link"><img src="http://localhost:3000/logo.svg" alt="Home" /></Link>
             </li>
-            {/* <li className="group">
-                    <Link to="/" className="link">Home</Link>
-                </li> */}
             <li className="group">
                 <Link to="/create" className="link">Submit</Link>
             </li>

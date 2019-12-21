@@ -129,7 +129,7 @@ function Details(props) {
 
     // debugger
     const commentsContent = <div className="comments center">
-        {bug.comments ? bug.comments.map(comment => <Comment key={comment._id} {...comment} />) : <h2>There are no comments yet...</h2>}
+        {(bug.comments || []).length > 0 ? bug.comments.map(comment => <Comment key={comment._id} {...comment} />) : <h2>There are no comments yet...</h2>}
     </div>
 
     const addCommentHeading = <h2 className="comments-heading">Add a comment:</h2>

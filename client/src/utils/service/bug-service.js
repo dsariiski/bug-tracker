@@ -56,8 +56,6 @@ function edit(newData) {
 
     const bugBody = { title, description, status, views }
 
-    debugger
-
     return axios.post(editUrl, JSON.stringify(bugBody), {
         headers: {
             "Content-Type": "application/json"

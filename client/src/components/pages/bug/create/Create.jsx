@@ -39,10 +39,11 @@ function Create(props) {
         errors={getErrors()}
     />
 
+    //protected on back-end
     if (loggedIn) {
         return <TemplatePage content={createForm} />
     } else {
-        history.push("/bug/create")
+        // history.push("/bug/create")
         return <Redirect to="/login" />
     }
 }

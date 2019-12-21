@@ -70,18 +70,19 @@ function withForm(Cmp, initialState) {
                 }
 
                 //omitting real-time validations when logging in
-                if(!omitValidations){
-                validationPromise.then(ok => {
-                    this.setState((prevState) => {
-                        return { errors: { ...prevState.errors, [name]: [] } }
-                    })
-                }).catch(errors => {
-                    if (errors.name === "ValidationError") {
-                        this.setState(prevState => {
-                            return { errors: { ...prevState.errors, [errors.path]: [errors.message] } }
+                if (!omitValidations) {
+                    // debugger
+                    validationPromise.then(ok => {
+                        this.setState((prevState) => {
+                            return { errors: { ...prevState.errors, [name]: [] } }
                         })
-                    }
-                })
+                    }).catch(errors => {
+                        if (errors.name === "ValidationError") {
+                            this.setState(prevState => {
+                                return { errors: { ...prevState.errors, [errors.path]: [errors.message] } }
+                            })
+                        }
+                    })
                 }
 
                 id = setTimeout(() => {
@@ -116,8 +117,6 @@ function withForm(Cmp, initialState) {
 
                     this.setState({ errors })
                 })
-
-
             } else if (category === "bug") {
                 const bugData = this.state.form
 
@@ -186,6 +185,8 @@ function withForm(Cmp, initialState) {
 
         registerResolve = userInfo => {
             // console.log(`Registered successfully!`)
+
+            this.props.history.push("/login")
 
             store.addNotification({
                 message: `Registration successful!`,
