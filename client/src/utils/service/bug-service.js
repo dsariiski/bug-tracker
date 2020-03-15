@@ -36,10 +36,6 @@ function create({ title, description }) {
         status: undefined
     }
 
-    // debugger
-
-    // return
-
     return axios.post(createUrl, JSON.stringify(bugBody), {
         headers: {
             "Content-Type": "application/json"
@@ -78,8 +74,6 @@ function comment(commentBody) {
 
 function delBug(id) {
     const deleteUrl = baseUrl + "bug/delete/" + id
-
-    console.log(deleteUrl)
 
     return axios.get(deleteUrl)
 }

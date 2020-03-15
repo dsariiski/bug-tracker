@@ -20,16 +20,19 @@ function Register({ changeHandlerMaker, submitHandlerMaker, history, getErrors }
 
     const fields = [{
         id: "username",
+        labelName: "Username",
         type: "text",
         changeHandler: changeUsernameHandler,
         element: "input"
     }, {
         id: "password",
+        labelName: "Password",
         type: "password",
         changeHandler: changePasswordHandler,
         element: "input"
     }, {
         id: "repeatPassword",
+        labelName: "Repeat password",
         type: "password",
         changeHandler: changeRepeatPasswordHandler,
         element: "input"

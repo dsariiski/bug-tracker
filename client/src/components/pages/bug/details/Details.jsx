@@ -15,7 +15,6 @@ let first = true
 function Details(props) {
     const currentHistory = props.history.length
 
-    console.log(props)
     // let load = props.match.params.load
 
     const [history, setHistory] = useState(false)
@@ -33,7 +32,6 @@ function Details(props) {
     function getBugFromDb() {
         bugService.get.bug(bug._id)
             .then(({ data }) => {
-                // debugger
                 if (first) {
                     bugService.get.updateViews(id)
                     first = false
@@ -47,8 +45,6 @@ function Details(props) {
                 if (creatorName === data.creator.username) {
                     setAuthorized(true)
                 }
-
-                // debugger
 
                 if (!bug.comments || bug.comments.length !== data.comments.length) {
                     setBug(data)
@@ -75,7 +71,7 @@ function Details(props) {
     if (currentHistory !== history) {
         getBugFromDb()
 
-        incrementView()
+        // incrementView()
 
         setHistory(currentHistory)
     }

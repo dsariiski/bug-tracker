@@ -19,7 +19,8 @@ function Form({ id, title, submitName, fields, submitHandler, register, login, e
                     type={field.type}
                     changeHandler={field.changeHandler}
                     value={field.valueGetter ? field.valueGetter()[field.id] : null}
-                    key={field.id} />
+                    key={field.id}
+                    labelName={field.labelName || undefined} />
                 <Errors errors={errors[field.id]} />
             </React.Fragment>)
         } else {

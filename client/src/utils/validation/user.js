@@ -36,12 +36,13 @@ function validatePassword({ password }) {
 }
 
 function validateRePassword({ password, repeatPassword }) {
-    return password === repeatPassword ?
+    return ((password === repeatPassword) && password && repeatPassword) ?
         Promise.resolve("Passwords are equal!") :
         Promise.reject({ name: "ValidationError", path: "repeatPassword", message: "Passwords don't match!" })
 }
 
 function validateRegister({ username, password, repeatPassword }) {
+    console.log(`args: \n${arguments}`)
     const userBlueprint = makeBlueprint("username")
     const passBlueprint = makeBlueprint("password")
     const reBlueprint = makeBlueprint("repeatPassword")

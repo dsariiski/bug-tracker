@@ -19,11 +19,13 @@ function Login({ changeHandlerMaker, submitHandlerMaker, getCookie, history, get
 
     const fields = [{
         id: "username",
+        labelName: "Username",
         type: "text",
         changeHandler: changeUsernameHandler,
         element: "input"
     }, {
         id: "password",
+        labelName: "Password",
         type: "password",
         changeHandler: changePasswordHandler,
         element: "input"

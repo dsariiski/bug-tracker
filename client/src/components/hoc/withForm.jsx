@@ -106,13 +106,19 @@ function withForm(Cmp, initialState) {
             if (category === "user") {
                 const { username, password, repeatPassword } = this.state.form
 
-                const operation = repeatPassword ? "register" : "login"
+                const operation = (repeatPassword !== undefined) ? "register" : "login"
+
+                // debugger
 
                 validations.user[operation]({ username, password, repeatPassword }).then((ok) => {
+                    // debugger
+
                     userService.post[type](username, password, repeatPassword)
                         .then(this.handlers[category][type])
                         .catch(this.handlers.error)
                 }).catch(err => {
+                    // debugger
+
                     const errors = reduceErrors(err)
 
                     this.setState({ errors })
@@ -246,10 +252,17 @@ function withForm(Cmp, initialState) {
         }
 
         errorHandler = call => {
-            const error = call.response.data.errors[0]
+            const error = (call.response.data.errors || [])[0]
+
+            console.log("error: " + JSON.stringify(call.response.data.errors))
+
             if ((call.response.status === 409) || (call.response.status === 403)) {
                 return this.setState((prevState) => {
+                    // debugger
                     prevState.errors["username"] = [error]
+
+                    console.log(`prevState.errors: ${JSON.stringify(prevState.errors)}\n`)
+
                     return { errors: { ...prevState.errors } }
                 })
             }
